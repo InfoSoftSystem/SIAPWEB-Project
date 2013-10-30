@@ -1,0 +1,38 @@
+Reunión de requerimiento:
+
+Jueves 17 de Octubre de 2013
+9:00 - 10:30 a.m.
+
+1- Entregar un documento parcial de la documentación
+2- Documentos fuentes de los módulos
+3- Diccionario de datos de los macro-procesos de programación, presupuestación, adquisición.
+4- Dirección de ubicación de la documentación y fuentes - ok
+5- Entorno de desarollo
+6- Entregar los procedimientos asociados a la lógica del negocio (programación y presupuestacion)
+Entregar a más tardar el viernes 18/10/2013
+
+
+sales@infosoft-system.com
+Henry Melara
+
+Base de desarrollo
+Sub-version para la documentación, fuentes y war para pruebas
+vpn para acceso a la base de datos
+
+Lunes 21/10/2013
+- Revisión del avance de la configuración de la infraestructura: El jefe de sistemas indicó 
+  que tomaría una semana montar lo necesario (25/10/2013)
+- Para garantizar la disponibilidad de la documentación la empresa pondrá a disposición
+  un repositorio de control de fuentes mediante GitHub, en los próximos días enviarán el 
+  mecanismo de utilización.
+- Se colocará toda la documentación primero en el GH y después en el MINED.
+- El plan de trabajo será entregado el miércoles 23/10/2013
+- Se discutió dos alternativas de la arquitectura tecnológica de la solución:
+	Infraestructura requerida:
+		jdk : 1.6
+		Tomcat 6.014
+	1. Trasladar los datos de la sesión del servidor actual, encriptados a un nuevo servidor
+	2. Crear una tabla que sirva para intercambiar los datos de sesión entre las dos aplicación
+- Se proporcionó el estandard de la documentación.
+- En el caso del MINED, se discutió la necesidad de delimitar el desarrollo, para el cual se emitirá
+  una carta de aclaración a la empresa, donde se hará aclaración de los módulos que se desarrollarán.
