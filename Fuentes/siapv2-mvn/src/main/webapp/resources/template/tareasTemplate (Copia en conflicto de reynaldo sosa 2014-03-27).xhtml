@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="#{request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
+        <style>
+            .wrapper_header {
+                text-align: center;
+                vertical-align: middle;
+                height: 50px;
+                font-size: 24px;
+            }
+            .faces-layout-fix {
+                border: none !important;
+                height: 100%;
+                width: 100%;
+            }
+        </style>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('.dvProceso').on('click', '.dvPaso', function() {
+                    $('.dvPaso').removeClass('selected');
+                    $(this).addClass('selected');
+                });
+            });
+        </script>
+    </h:head>
+
+    <h:body>
+        <div id="divPrincipal" style="height:100%; width: 1024px; position: absolute; ">
+            <p:layout id="layout" styleClass="faces-layout-fix">  
+                <p:layoutUnit position="north"  styleClass="colorFondoLayout" >
+                    <div class="wrapper_header" >
+                        <h:outputText value="Sistema de Acreditacion Institucional SIRAI - v2" style="font-size: 24px"/>
+                        <br/>
+                        <h:outputText value="Ministerio de Educacion" style="font-size: 15px;"/>
+                    </div>
+                </p:layoutUnit>
+
+                <p:layoutUnit resizable="true" position="west" size="220" header="Menu"  collapsible="true">
+                    <h:form id="frmMenu" prependId="false" >
+                        <p:growl id="growl" showDetail="true" autoUpdate="true" />
+                        <p:menu id="menuPrincipal" style="width: 95%" /> 
+
+                        <p:tree value="#{menuTreeBean.root}" var="node" id="tree" style="width: 95%" selectionMode="single" selection="#{menuTreeBean.selected}">
+                            <p:ajax event="select" listener="#{menuTreeBean.onNodeSelect}" />  
+                            <p:treeNode id="treeNode">  
+                                <h:outputText value="#{node}" id="lblNode"/>  
+                            </p:treeNode>  
+                        </p:tree>  
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south"  size="24">
+                    <p:outputLabel value="Usuario: ADMIN" />
+                    <p:spacer width="20" height="8"/>
+                    <p:outputLabel value="Codigo: PRO-0001" />
+                    <p:spacer width="20" height="8"/>
+                    <p:outputLabel value="Perfil: Administrador" />
+                </p:layoutUnit>
+
+                <p:layoutUnit resizable="true" position="center"  >
+                    <ui:insert name="content"></ui:insert>
+                </p:layoutUnit>
+            </p:layout> 
+        </div>
+    </h:body>
+</html>

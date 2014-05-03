@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='windows-1252' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="#{request.contextPath}/../resources/template/tareasTemplate.xhtml">
+        <ui:define name="content">
+            <h:form id="frmPrincipal">
+                <p:menubar>
+                    <p:menuitem value="Nuevo" icon="nuevo" ajax="true" action="#{mantenimientoBean.nuevo}" />
+                    <p:menuitem value="Modificar" icon="modificar" />
+                    <p:menuitem value="Guardar" icon="guardar" ajax="true" />
+                    <p:menuitem value="Recuperar" icon="recuperar" />
+                    <p:menuitem value="Imprimir" icon="imprimir" />
+                    <f:facet name="options">
+                        <p:outputLabel value="Usuario: "/>
+                        <p:outputLabel value="ADMIN" style="font-weight: bold;"/>
+                        <p:spacer width="10" height="8"/>
+                        <p:commandButton value="Salir" icon="salir" />
+                    </f:facet>
+                </p:menubar>
+
+                <pe:masterDetail id="masterDetail" showAllBreadcrumbItems="true">  
+                    <f:facet name="header">  
+                        <p:messages showDetail="false" showSummary="true"/>  
+                    </f:facet>  
+
+                    <pe:masterDetailLevel level="1">  
+                        <f:facet name="label">  
+                            <h:outputFormat value="Overview {0}">  
+                                <f:param value="Persons"/>  
+                            </h:outputFormat>  
+                        </f:facet>  
+
+                        <p:dataTable id="persons" value="#{mantenimientoBean.lstTiposPoaReprogramaciones}" var="tipoPo">  
+                            <p:column headerText="Id">  
+                                <p:commandLink value="#{tipoPo.tipoPoaReprog}">  
+                                    <pe:selectDetailLevel contextValue="#{tipoPoa}"/>  
+                                </p:commandLink>  
+                            </p:column>  
+                            <p:column headerText="Descripción">  
+                                <h:outputText value="#{tipoPo.descripcionTipo}"/>  
+                            </p:column>  
+                        </p:dataTable>  
+                    </pe:masterDetailLevel>  
+
+                    <pe:masterDetailLevel level="2" contextVar="tipoPoa" levelLabel="Person Detail">  
+                        <h:panelGrid id="personDetail" columns="2" columnClasses="formColumn1,formColumn2">  
+                            <h:outputText value="Name (string)"/>  
+                            <p:inputText value="#{person.name}" required="true" label="Name"/>  
+                            <h:outputText value="Tax Class (number)"/>  
+                            <p:inputText value="#{person.taxClass}" required="true" label="Tax Class">  
+                                <f:validateLength maximum="1"/>  
+                            </p:inputText>  
+                            <h:outputText value="Birth Date (date dd.MM.yyyy)"/>  
+                            <p:inputText value="#{person.birthDate}" required="true" label="Birth Date">  
+                                <f:convertDateTime pattern="dd.MM.yyyy"/>  
+                            </p:inputText>  
+                            <h:outputText value="Language skills"/>  
+                            <h:panelGrid columns="2" style="vertical-align: middle;">  
+                                <p:dataList value="#{person.languageSkills}" var="skill" itemType="circle">  
+                                    <h:outputText value="#{skill}"/>  
+                                </p:dataList>  
+                                <p:commandLink immediate="true" style="padding:5px 0 0 8px; vertical-align:middle;">  
+                                    <h:graphicImage library="images" name="flashlight_plus.png" style="border:none;"/>  
+                                    <pe:selectDetailLevel contextValue="#{person}" preserveInputs="@all"/>  
+                                    <pe:tooltip value="Add language skills"/>  
+                                </p:commandLink>  
+                            </h:panelGrid>  
+                        </h:panelGrid>  
+
+                        <p:commandButton value="Save with success" process="masterDetail"  
+                                         action="#{complexMasterDetailController.saveSuccess(person)}"  
+                                         style="margin-top:10px;" icon="ui-icon-disk">  
+                            <pe:selectDetailLevel level="1"/>  
+                        </p:commandButton>  
+                        <p:commandButton value="Save with failure" process="masterDetail"  
+                                         action="#{complexMasterDetailController.saveFailure(person)}"  
+                                         style="margin-top:10px;" icon="ui-icon-disk">  
+                            <pe:selectDetailLevel level="1"/>  
+                        </p:commandButton>  
+                    </pe:masterDetailLevel>  
+                </pe:masterDetail>
+
+
+                <p:panel header="Tipos de Reprogramaciones al POA">
+                    <!--p:dataTable id="tblDatos" value="{mantenimientoBean.lstTiposPoaReprogramaciones}" var="tipoPoa" editMode="cell" editable="true"
+                                 style="width: 425px;">
+
+                        <p:column headerText="Id" width="25">
+                            <p:outputLabel value="{tipoPoa.tipoPoaReprog}" />
+                        </p:column>
+                        <p:column headerText="Descripción" style="height: 18px;" width="400">
+                            <p:cellEditor>  
+                                <f:facet name="output"><h:outputText value="{tipoPoa.descripcionTipo}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="{tipoPoa.descripcionTipo}" style="width: 96%;" /></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Borrar">
+                            <p:cellEditor>  
+                                <f:facet name="output">
+                                    <p:selectBooleanCheckbox value="{tipoPoa.eliminado}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:selectBooleanCheckbox value="{tipoPoa.eliminado}" />
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                    </p:dataTable-->
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

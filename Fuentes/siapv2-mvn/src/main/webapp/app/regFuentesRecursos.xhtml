@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+    <ui:composition template="#{request.contextPath}/../resources/template/tareasTemplate.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <p:tabView id="tbvFuente">  
+                    <p:tab id="tab1" title="A) Datos Generales">  
+                        <h:panelGrid columns="2" styleClass="alineadoTop">
+                            <p:outputLabel value="1. Id:"/>
+                            <p:inputText id="txtId" disabled="true"/>
+                            <p:outputLabel value="2. Descripcion de la plantilla:"/>
+                            <p:inputTextarea id="txaDescripcion" cols="50"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="5" >
+                            <p:outputLabel value="3. Origen del recurso:"/>
+                            <p:selectOneMenu id="cbTipoRecurso">
+                                <f:selectItem itemLabel="Seleccione un valor"/>
+                            </p:selectOneMenu>
+                            <p:spacer width="10"/>
+                            <p:outputLabel value="3. Donacion administrado por:"/>
+                            <p:selectOneMenu id="cbTipoAdmon">
+                                <f:selectItem itemLabel="Seleccione un valor"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab id="tab2" title="B) Configuracion variables de control">  
+                    </p:tab>
+                    <p:tab id="tab3" title="C) Etapas de ejecucion aplicables">  
+                    </p:tab>
+                </p:tabView>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

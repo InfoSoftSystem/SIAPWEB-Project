@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition template="#{request.contextPath}/../resources/template/tareasTemplate.xhtml">
+        <ui:define name="content">
+            <h:form id="frmPrincipal" >
+                <p:panel id="pnlEmpresas">
+                    <f:facet name="header">
+                        <p:graphicImage url="#{request.contextPath}/../resources/images/representante_14.png" />
+                        <p:spacer width="10"/>
+                        <h:outputText value="Translado de Oferentes"/>
+                    </f:facet>
+
+                    <p:dataTable id="tblFaltas" value="#{bancoProveedoresBean.lstTrasladoEmpresa}" var="empresa">
+                        <p:column headerText="Id">
+                            <p:outputLabel value="#{empresa.identificadorPrimarioDeLaEmpresa}" />
+                        </p:column>
+
+                        <p:column headerText="N.I.T.">
+                            <p:outputLabel value="#{empresa.numeroDeNit}" />
+                        </p:column>
+
+                        <p:column headerText="Razon Social">
+                            <p:outputLabel value="#{empresa.razonSocial}" />
+                        </p:column>
+
+                        <p:column headerText="Representante">
+                            <p:outputLabel value="#{empresa.nombreRepresentante}" />
+                        </p:column>
+                        
+                        <p:column headerText="Estado">
+                            <p:outputLabel value="#{empresa.descripcionDeEstado}" />
+                        </p:column>
+                        
+                        <p:column headerText="Fecha de ingreso">
+                            <h:outputText value="#{empresa.fechaDeInsercion}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column headerText="Fecha de modificación">
+                            <h:outputText value="#{empresa.fechaDeModificacion}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Seleccionar">
+                            <p:selectBooleanCheckbox value="#{empresa.seleccionado}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <p:spacer width="20" />
+                <p:commandButton value="Certificar" icon="certificado" action="#{bancoProveedoresBean.trasladoOferente}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

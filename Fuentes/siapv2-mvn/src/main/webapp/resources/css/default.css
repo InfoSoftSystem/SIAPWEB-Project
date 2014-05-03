@@ -1,0 +1,150 @@
+body {
+    font-family:geneva, arial, helvetica, sans-serif;
+    margin:0;
+    padding:0;
+    font-size: 10px;
+    margin:0 auto;
+    width:1024px;
+    background-color:white;
+    background-position:50% 0;
+    background-repeat:repeat no-repeat;
+    color:gray;
+}
+
+/*
+ICONOS
+*/
+.nuevo{
+    background:url('../images/nuevo.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.modificar{
+    background:url('../images/modificar.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.eliminar{
+    background:url('../images/eliminar.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.recuperar{
+    background:url('../images/recuperar.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.imprimir{
+    background:url('../images/imprimir.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.guardar{
+    background:url('../images/guardar.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.salir{
+    background:url('../images/salir.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.certificado{
+    background:url('../images/certificado.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.iconIgual{
+    height: 24px; 
+    background-image: url('../images/igual_24.png');
+    text-align: center;
+    vertical-align: central;
+}
+
+.agregar{
+    background: url('../images/agregar.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.remover{
+    background: url('../images/remover.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.buscar{
+    background: url('../images/find.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.aceptar{
+    background: url('../images/ok.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+/*
+ESTILOS PARA TABLAS
+*/
+.alineadoTop td {
+    vertical-align: top; 
+}
+
+.dvPaso {
+    border: 1.0px solid rgb(204, 204, 204);
+    border-radius: 10.0px 10.0px 10.0px 10.0px;
+}
+.dvControl{
+    background-color : #99c2f2;
+}
+.dvTitulo{
+    color:#99c2f2;
+}
+.dvPaso:hover, #selected_dvPaso, .QuickStartLong:hover {
+    background: rgb(184, 225, 252);
+}
+.selected {
+    background-color : #99c2f2;
+}
+
+.total{
+    background-color: #2a399f !important;
+    color: white !important;
+    font-weight: bold !important;
+    background-image: none !important;
+    text-shadow: none !important;
+}
+
+.numero{
+    text-align: right;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    border:0;
+    padding:0.2em 0.2em 0.2em 1em;
+    position:relative;
+}
+
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td {
+    border-style:solid;
+    border-width:1px;
+    overflow:hidden;
+    padding:1px 10px;
+    white-space:nowrap;
+}
+
+.ui-datatable tbody td.wrap {
+    white-space: normal !important;;
+}
+.columna {text-align: right !important;;
+}

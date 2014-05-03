@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="#{request.contextPath}/../resources/template/tareasTemplate.xhtml">
+        <ui:define name="content">
+            <h:form id="frmPrincipal">
+                <p:menubar>
+                    <p:menuitem value="Nuevo" action="#{bancoProveedoresBean.nuevaMulta}" update="pnlEmpresas tblMultas" icon="nuevo" ajax="true"/>
+                    <p:menuitem value="Modificar" icon="modificar" />
+                    <p:menuitem value="Eliminar" icon="eliminar" action="#{bancoProveedoresBean.eliminarMulta}" update="pnlEmpresas tblMultas"/>
+                    <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarMulta}" update="frmPrincipal" icon="guardar" ajax="true" />
+                    <p:menuitem value="Recuperar" icon="recuperar" disabled="true"/>
+                    <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
+                    <f:facet name="options">
+                        <p:outputLabel value="Usuario: "/>
+                        <p:outputLabel value="ADMIN" style="font-weight: bold;"/>
+                        <p:spacer width="10" height="8"/>
+                        <p:commandButton value="Salir" icon="salir" />
+                    </f:facet>
+                </p:menubar>
+                <p:panel id="pnlEmpresas">
+                    <f:facet name="header">
+                        <p:graphicImage url="#{request.contextPath}/../resources/images/representante_14.png" />
+                        <p:spacer width="10"/>
+                        <h:outputText value="Registro de Multas"/>
+                    </f:facet>
+
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="1. Id:"/>
+                        <p:inputText disabled="true" value="#{bancoProveedoresBean.currentMultaOferente.identificadorMulta}"/>
+                        <p:outputLabel value="2. Contratista:"/>
+                        <h:panelGroup>
+                            <p:inputText id="txtContratista" value="#{bancoProveedoresBean.currentEmpresa.razonSocial}" disabled="true" size="40"/>
+                            <p:spacer width="15"/>
+                            <p:commandButton value="Empresa" icon="buscar" onclick="dlgBuscarEmp.show();" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                        </h:panelGroup>
+                        <p:outputLabel value="3. Contrato:"/>
+                        <p:inputText id="txtNumContrato" value="#{bancoProveedoresBean.currentMultaOferente.numeroContrato}" disabled="#{bancoProveedoresBean.deshabilitado}" />
+                        <p:outputLabel value="4. Tipo Multa:"/>
+                        <h:panelGrid columns="4">
+                            <p:selectOneMenu id="cbTipoMulta" value="#{bancoProveedoresBean.currentMultaOferente.idTipoDeMulta}" disabled="#{bancoProveedoresBean.deshabilitado}">
+                                <f:selectItem itemLabel="Seleccione un valor"/>
+                                <f:selectItems value="#{bancoProveedoresBean.lstTipoMultas}" var="tipoMulta" itemValue="#{tipoMulta.idTipoDeMulta}" itemLabel="#{tipoMulta.descripcionTipoMulta}"/>
+                            </p:selectOneMenu>
+                            <p:spacer width="30"/>
+                            <p:outputLabel value="5. Monto:" for="txtMonto"/>
+                            <p:inputText id="txtMonto" size="10" style="text-align: right;" value="#{bancoProveedoresBean.currentMultaOferente.montoMulta}" disabled="#{bancoProveedoresBean.deshabilitado}" converterMessage="Necesita ingresar un número valido"/>
+                        </h:panelGrid>
+                        <p:outputLabel value="6. Descripción:"/>
+                        <p:inputTextarea id="txaDescripcion" cols="50" value="#{bancoProveedoresBean.currentMultaOferente.descripcionDeMulta}" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                    </h:panelGrid>
+                </p:panel>
+                <p:dataTable id="tblMultas" value="#{bancoProveedoresBean.lstMultas}" var="multa" selectionMode="single" rowKey="#{multa.identificadorMulta}">
+                    <p:ajax event="rowSelect" listener="#{bancoProveedoresBean.onRowSelectMultas}"   
+                            update=":frmPrincipal:pnlEmpresas" /> 
+                    <p:column headerText="Contratista">
+                        <p:outputLabel value="#{multa.razonSocial}"/>
+                    </p:column>
+
+                    <p:column headerText="Contrato">
+                        <p:outputLabel value="#{multa.numeroContrato}"/>
+                    </p:column>
+
+                    <p:column headerText="Tipo">
+                        <p:outputLabel value="#{multa.descripcionTipoMulta}"/>
+                    </p:column>
+
+                    <p:column headerText="Multa" style="text-align: right;">
+                        <p:outputLabel value="#{multa.montoMulta}">
+                            <f:convertNumber pattern="$ #,##0.00" />
+                        </p:outputLabel>
+                    </p:column>
+
+                    <p:column headerText="Descripción">
+                        <p:outputLabel value="#{multa.descripcionDeMulta}"/>
+                    </p:column>
+                </p:dataTable>
+                
+                <p:dialog id="dlgBuscarEmp" widgetVar="dlgBuscarEmp" header="Busqueda de Empresas" width="600">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Razon Social:"/>
+                        <p:inputText value="#{bancoProveedoresBean.razonSocial}"/>
+                        <p:outputLabel value="N.I.T.:"/>
+                        <h:panelGroup>
+                            <p:inputText value="#{bancoProveedoresBean.numeroDeNit}"/>
+                            <p:spacer width="15"/>
+                            <p:commandButton value="Aceptar" icon="aceptar" action="#{bancoProveedoresBean.buscarEmpresas}" update="tblEmpresas"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <hr />
+                    <p:outputLabel value="Listado de empresas"/>
+                    <p:dataTable id="tblEmpresas" value="#{bancoProveedoresBean.lstEmpresa}" var="emp" selectionMode="single" 
+                                 selection="#{bancoProveedoresBean.currentEmpresa}" rowKey="#{emp.identificadorPrimarioDeLaEmpresa}">
+                        <p:ajax event="rowSelect"  oncomplete="dlgBuscarEmp.hide();" update=":frmPrincipal:pnlEmpresas :frmPrincipal:tblMultas" />  
+                        
+                        <p:column headerText="Id" width="50">
+                            <p:outputLabel value="#{emp.identificadorPrimarioDeLaEmpresa}" />
+                        </p:column>
+
+                        <p:column headerText="N.I.T." width="110">
+                            <p:outputLabel value="#{emp.numeroDeNit}" />
+                        </p:column>
+
+                        <p:column headerText="Razón Social">
+                            <p:outputLabel value="#{emp.razonSocial}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:dialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

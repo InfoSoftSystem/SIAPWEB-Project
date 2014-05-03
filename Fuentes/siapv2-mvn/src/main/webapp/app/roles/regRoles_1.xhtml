@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+
+    </h:head>
+    <ui:composition template="#{request.contextPath}/../resources/template/tareasTemplate.xhtml">
+        <ui:define name="content">
+            <h:form id="frmPrincipal">
+                <p:menubar>
+                    <p:menuitem value="Nuevo" icon="nuevo" ajax="true" />
+                    <p:menuitem value="Modificar" icon="modificar" />
+                    <p:menuitem value="Eliminar" icon="eliminar" />
+                    <p:menuitem value="Guardar" icon="guardar" />
+                    <p:menuitem value="Recuperar" icon="recuperar" />
+                    <p:menuitem value="Imprimir" icon="imprimir" />
+                    <f:facet name="options">
+                        <p:outputLabel value="Usuario: "/>
+                        <p:outputLabel value="ADMIN" style="font-weight: bold;"/>
+                        <p:spacer width="10" height="8"/>
+                        <p:commandButton value="Salir" icon="salir" />
+                    </f:facet>
+                </p:menubar>
+                <div class="dvProceso">
+                    <div class="dvPaso" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 300px; left: 550px; width: 150px; height: 35px; text-align: center; padding-top: 6px;" onclick="dlgAsigRolesUsuarios.show();">
+                        <p:outputLabel value="4.1 Asignación de Roles a Usuario" />
+                    </div>
+                </div>
+                <p:overlayPanel id="carPanel" for="carBtn" hideEffect="fade" dynamic="true">  
+                    <p:dataTable id="table" var="car" value="#{tableBean.cars}" rows="10" paginator="true">  
+                        <p:column headerText="Model">  
+                            <h:outputText value="#{car.model}" />  
+                        </p:column>  
+
+                        <p:column headerText="Year">  
+                            <h:outputText value="#{car.year}" />  
+                        </p:column>  
+
+                        <p:column headerText="Manufacturer">  
+                            <h:outputText value="#{car.manufacturer}" />  
+                        </p:column>  
+
+                        <p:column headerText="Color">  
+                            <h:outputText value="#{car.color}" />  
+                        </p:column>  
+                    </p:dataTable>  
+                </p:overlayPanel>
+
+                <p:dialog id="dlgAsigRolesUsuarios" widgetVar="dlgAsigRolesUsuarios" header="3.1 Administracion de la Autorizacion" visible="#{rolesBean.showAsigRolesUsuarios}" style="max-height: 600px !important" >
+                    <p:ajax event="close" listener="#{rolesBean.cerrarPopupRolesUsuario}"/>  
+                    <h:panelGrid id="panelPrincipalAsigRoles" columns="2">
+                        <h:panelGrid id="panelAsigRoles" columns="1">
+                            <p:outputLabel value="3.1.4 Asignacion de Roles a Usuarios"/>
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="1.4.1 Plantilla de Roles"/>
+                                <p:selectOneMenu id="cbmPlantilla" value="#{planGlobalBean.idConvenio}">
+                                    <f:selectItem itemLabel="Seleccione un valor"/>
+                                    <f:selectItems value="#{planGlobalBean.lstConvenios}" var="selectConvenio" itemValue="#{selectConvenio.convenio}" itemLabel="#{selectConvenio.numeroConvenio}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <p:outputLabel value="1.4.2 Detalle de Usuarios asignados a la plantilla"/>
+                            <h:panelGrid style="float: right" columns="2">
+                                <p:commandButton id="carBtn" value="Block Panel" type="button"/>  
+                                <p:commandButton id="saveBtn" value="+" style="float: right" onclick="dlgAsigRolesPorPlantilla.show();"/>
+                                <p:commandButton value="-" style="float: right" onclick="dlgAsigRolesPorPlantilla.show();"/>
+                            </h:panelGrid>
+                            <p:dataTable id="tblAsigRoles" var="ent4" value="#{rolesBean.entidades4}" widgetVar="tblRoles">  
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{ent4.id}" />  
+                                </p:column>
+                                <p:column headerText="Procedimiento ú Opcion">
+                                    <h:outputText value="#{ent4.procedimiento}" />  
+                                </p:column>
+                            </p:dataTable>     
+                        </h:panelGrid>
+                        <p:outputLabel value="Imagen"/>
+                    </h:panelGrid>
+                </p:dialog>
+
+
+                <p:blockUI block="dlgAsigRolesUsuarios" widgetVar="bui"/>  
+
+                <p:dialog id="dlgAsigRolesPorPlantilla" widgetVar="dlgAsigRolesPorPlantilla" header="3.1 Administracion de la Autorizacion" visible="#{rolesBean.showAsigRolesPorPlantilla}" style="max-height: 600px !important" >
+                    <p:ajax event="close" listener="#{rolesBean.cerrarPopupRolesPorPlantilla}"/>  
+                    <h:panelGrid id="panelAsigRolesPorPlantilla" columns="2">
+                        <h:panelGrid id="panelAsigRolesPlan" columns="1">
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="1.4.1 Plantilla de Roles Seleccionada"/>
+                                <p:selectOneMenu id="cbmPlantillaSelect" value="#{planGlobalBean.idConvenio}">
+                                    <f:selectItem itemLabel="Seleccione un valor"/>
+                                    <f:selectItems value="#{planGlobalBean.lstConvenios}" var="selectConvenio" itemValue="#{selectConvenio.convenio}" itemLabel="#{selectConvenio.numeroConvenio}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <p:outputLabel value="1.4.2 Detalle de Usuarios asignados a la plantilla"/>
+                            <p:pickList id="pickList" value="#{rolesBean.usuarios}" var="usuario"   
+                                        itemLabel="#{usuario.usuario}" itemValue="#{usuario.id}" />       
+                        </h:panelGrid>
+                        <p:outputLabel value="Imagen"/>
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

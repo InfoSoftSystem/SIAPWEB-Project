@@ -1,0 +1,287 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+
+    </h:head>
+    <ui:composition template="#{request.contextPath}/../resources/template/tareasTemplate.xhtml">
+        <ui:define name="content">
+            <h:form id="frmPrincipal">
+                <p:menubar>
+                    <p:menuitem value="Nuevo" icon="nuevo" ajax="true" />
+                    <p:menuitem value="Modificar" icon="modificar" />
+                    <p:menuitem value="Eliminar" icon="eliminar" />
+                    <p:menuitem value="Guardar" icon="guardar" />
+                    <p:menuitem value="Recuperar" icon="recuperar" />
+                    <p:menuitem value="Imprimir" icon="imprimir" />
+                    <f:facet name="options">
+                        <p:outputLabel value="Usuario: "/>
+                        <p:outputLabel value="ADMIN" style="font-weight: bold;"/>
+                        <p:spacer width="10" height="8"/>
+                        <p:commandButton value="Salir" icon="salir" />
+                    </f:facet>
+                </p:menubar>
+                <div class="dvEstadoProceso">
+                    <div class="dvControl" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 50px; left: 300px; width: 80px; height: 24px; text-align: center; padding-top: 6px;">
+                        <p:outputLabel value="0.Control" />
+                    </div>
+
+                    <div class="dvProyectos" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 50px; left: 410px; width: 80px; height: 24px; text-align: center; padding-top: 6px;">
+                        <p:outputLabel value="1.Proyectos" />
+                    </div>  
+                    <div class="dvPresupuestacion" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 50px; left: 510px; width: 100px; height: 24px; text-align: center; padding-top: 6px;">
+                        <p:outputLabel value="2.Presupuestacion" />
+                    </div>
+                    <div class="dvAdquisicion" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 50px; left: 630px; width: 80px; height: 24px; text-align: center; padding-top: 6px;">
+                        <p:outputLabel value="3.Adquisicion" />
+                    </div>
+                </div>
+                <div class="dvTitulo">
+                    <div class="dvTirulouno" style=" position: absolute; border: 0px solid #ccc; border-bottom:  10px; top: 100px; left: 10px; width: 90px; height: 24px; text-align: left; padding-top: 6px;font-size:250%">
+                        <p:outputLabel value="3.Roles"/>   
+                    </div>                   
+                    <div class="dvTitulodos" style=" position: absolute; border: 0px solid #ccc; border-bottom:  10px; top: 135px; left: 10px; width: 480px; height: 24px; text-align: left; padding-top: 6px;font-size:250%">
+                        <p:outputLabel value="3.2. Administracion de Acceso a Datos"/>  
+                    </div>
+                </div>
+
+                <div class="dvProceso">
+                    <div style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 250px; left: 200px;">
+                        <p:spacer width="20" height="20"/>
+                    </div>
+                    <div style="position: absolute; border: 1px solid #ccc; left: 210px; height: 28px; top: 271px;"/>
+                    <div class="dvPaso" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 300px; left: 145px; width: 140px; height: 50px; text-align: center; padding-top: 6px;" onclick="dlgEstructuraEstrat.show();">
+                        <p:outputLabel value="3.2.1 Niveles de Acceso a Datos" />
+                    </div>
+
+                    <div class="dvPaso" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 300px; left: 320px; width: 150px; height: 50px; text-align: center; padding-top: 6px;" onclick="dlgProcesosInst.show();">
+                        <p:outputLabel value="3.2.2 Plantillas de Acceso a Datos" />
+                    </div> 
+                    <div style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 320px; left: 500px;">
+                        <p:spacer width="20" height="20"/>
+                    </div>
+                </div>
+                <p:dialog id="dlgEstructuraEstrat" widgetVar="dlgEstructuraEstrat" header="3.1 Administracion de la Autorizacion" visible="#{rolesBean.showEstructuraOp}" style="max-height: 600px !important" >
+                    <p:ajax event="close" listener="#{rolesBean.cerrarPopupEstructuraOp}"/>  
+                    <h:panelGrid id="panelEstructuraEstrat" columns="2">
+                        <h:panelGrid id="panelGridEstructuraEstrat" columns="1">
+                            <p:outputLabel value="1. Niveles de Acceso a Datos Segun la Estructura de la Estrategia y su Financiamiento "/>
+                            <p:tree value="#{rolesBean.treePlanDeTrabajo}" var="node" id="tree">  
+                                <p:treeNode id="treeNode">  
+                                    <h:outputText value="#{node}" id="lblNode"/>  
+                                </p:treeNode>  
+                            </p:tree>
+                            <p:outputLabel value="1.2.1 Clasificacion Padre"/>
+                            <p:inputText value="hola" size="10"/>
+                            <p:outputLabel value="1.2.2 Clasificacion"/>
+                            <p:inputText value="hola" size="10"/>
+                        </h:panelGrid>
+                        <p:outputLabel value="Imagen"/>
+                    </h:panelGrid>
+                </p:dialog>
+
+                    <p:dialog id="dlgProcesosInst" widgetVar="dlgProcesosInst" header="3.1 Administracion de la Autorizacion" visible="#{rolesBeanAutorizacion.showProcesosInst}" style="max-height: 600px !important" >
+                    <p:ajax event="close" listener="#{rolesBean.cerrarPopupProcesosInst}"/>  
+                    <h:panelGrid id="panelPricipal" columns="2">
+                        <h:panelGrid id="panelGridOrganizacion" columns="1">
+                            <p:outputLabel value="1.1.2 Plantilla de Acceso a Datos por Niveles de Acceso, Roles y Financiamiento"/>
+                            <p:outputLabel value="A) Nombre de la Plantilla"/>
+                            <p:dataTable id="tblPlantillas" var="ent4" value="#{rolesBean.entidades6}" widgetVar="tblRoles">  
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{ent4.id}" />  
+                                </p:column>
+                                <p:column headerText="Procedimiento ú Opcion">
+                                    <h:outputText value="#{ent4.nombre}" />  
+                                </p:column>                                
+                            </p:dataTable> 
+                            <p:outputLabel value="1.2.2 Especificaion del Nivel, Jerarquia y Unidades Organizativas"/>
+                            <h:panelGrid columns="2">
+                                <h:panelGrid columns="3">
+                                    <p:outputLabel value="A) Nivel de Realizacion Geografica"/>
+                                    <p:selectOneMenu id="cmbReaGeografica" value="#{planGlobalBean.idConvenio}">
+                                        <f:selectItem itemLabel="Seleccione un valor"/>
+                                        <f:selectItems value="#{planGlobalBean.lstConvenios}" var="selectConvenio" itemValue="#{selectConvenio.convenio}" itemLabel="#{selectConvenio.numeroConvenio}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="(Gobierno Central, Institucional, Departamental, Municipal y Local)"/>
+
+                                    <p:outputLabel value="B) Nivel de Jerarquia"/>
+                                    <p:selectOneMenu id="cmbJerarquia" value="#{planGlobalBean.idConvenio}">
+                                        <f:selectItem itemLabel="Seleccione un valor"/>
+                                        <f:selectItems value="#{planGlobalBean.lstConvenios}" var="selectConvenio" itemValue="#{selectConvenio.convenio}" itemLabel="#{selectConvenio.numeroConvenio}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="(Ejecutivo, Direccion, Departamento, Seccion)           "/>
+                                </h:panelGrid>
+                                <h:panelGrid style="float: right" columns="2">
+                                    <p:commandButton value=" + " action="#{rolesBeanAutorizacion.agregarProceso}"/> 
+                                </h:panelGrid>
+                            </h:panelGrid>
+                            <p:tree value="#{rolesBean.treePlanDeTrabajo}" var="node" id="tree2" style="width: 680px">  
+                                <p:treeNode id="treeNode1">  
+                                    <h:outputText value="#{node}" id="lblNode1"/>  
+                                </p:treeNode>  
+                            </p:tree>
+                            <h:panelGrid  columns="3" width="680" >
+                                <h:column >
+                                    <h:panelGrid columns="2">
+                                        <p:outputLabel value="Seleccione un rol: "/>
+
+                                        <p:selectOneMenu id="cmbRol" value="#{planGlobalBean.idConvenio}">
+                                            <f:selectItem itemLabel="Seleccione un valor"/>
+                                            <f:selectItems value="#{planGlobalBean.lstConvenios}" var="selectConvenio" itemValue="#{selectConvenio.convenio}" itemLabel="#{selectConvenio.numeroConvenio}"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGrid>
+                                </h:column>
+                                <h:column class="columna">
+                                    <p:commandButton value=" + " action="#{rolesBeanAutorizacion.agregarRol}" style="float: right"/>
+                                </h:column>
+                            </h:panelGrid>
+                            <p:tree value="#{rolesBean.treePlanDeTrabajo}" var="node" id="tree3" style="width: 680px">  
+                                <p:treeNode id="treeNode2">  
+                                    <h:outputText value="#{node}" id="lblNode2"/>  
+                                </p:treeNode>  
+                            </p:tree>
+                        </h:panelGrid>
+                        <p:outputLabel value="Imagen"/>
+                    </h:panelGrid>
+                </p:dialog>  
+
+                    <p:dialog id="dlgPlantillaSel" widgetVar="dlgPlantillaSel" header="3.1 Administracion de la Autorizacion" visible="#{rolesBeanAutorizacion.showPlantillaSel}" style="max-height: 600px !important">
+                        <p:ajax event="close" listener="#{rolesBeanAutorizacion.cerrarPopupPlantillaSel}"/>  
+                    <h:panelGrid id="panelPricipalPlantillaSel" columns="2">
+                        <h:panelGrid id="panelGridPlantilla" columns="1">
+                            <p:outputLabel value="1.2.2.1.1 Pantilla Seleccionada "/>
+                            <h:panelGrid columns="2">
+                                <p:inputText value="1" size="2"/>
+                                <p:inputText value="NIVEL DE PLAN DE TRABAJO-ACCESO A TODA LA INSTITUCION " size="60"/>
+                            </h:panelGrid>                       
+                            <p:outputLabel value="1.2.2.1.2 Especificacion por nivel dentro de la jerarquía de la organización"/>
+
+                            <h:panelGrid columns="3">
+                                <p:outputLabel value="A) Nivel de Realizacion Geografica"/>
+                                <p:selectOneMenu id="cmbReaGeograficaPlan" value="#{planGlobalBean.idConvenio}">
+                                    <f:selectItem itemLabel="Seleccione un valor"/>
+                                    <f:selectItems value="#{planGlobalBean.lstConvenios}" var="selectConvenio" itemValue="#{selectConvenio.convenio}" itemLabel="#{selectConvenio.numeroConvenio}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="(Gobierno Central, Institucional, Departamental, Municipal y Local)"/>
+
+                                <p:outputLabel value="B) Nivel de Jerarquia"/>
+                                <p:selectOneMenu id="cmbJerarquiaPlan" value="#{planGlobalBean.idConvenio}">
+                                    <f:selectItem itemLabel="Seleccione un valor"/>
+                                    <f:selectItems value="#{planGlobalBean.lstConvenios}" var="selectConvenio" itemValue="#{selectConvenio.convenio}" itemLabel="#{selectConvenio.numeroConvenio}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="(Ejecutivo, Direccion, Departamento, Seccion)           "/>
+                            </h:panelGrid>
+
+
+                            <p:tree value="#{rolesBean.treePlanDeTrabajo}" var="node" id="tree4" style="width: 680px">  
+                                <p:treeNode id="treeNode2">  
+                                    <h:outputText value="#{node}" id="lblNode2"/>  
+                                </p:treeNode>  
+                            </p:tree>
+
+                            <h:panelGrid style="float: right" columns="2">
+                                <p:commandButton value="Cancelar" style="float: right"/>
+                                <p:commandButton value="Aceptar" style="float: right"/>
+                            </h:panelGrid>
+
+
+
+                        </h:panelGrid>
+                        <p:outputLabel value="Imagen"/>
+                    </h:panelGrid>
+                </p:dialog> 
+
+                    <p:dialog id="dlgPlantillayRolSel" widgetVar="dlgPlantillayRolSel" header="3.1 Administracion de la Autorizacion" visible="#{rolesBeanAutorizacion.showPlantillayRolSel}" style="max-height: 600px !important" >
+                        <p:ajax event="close" listener="#{rolesBeanAutorizacion.cerrarPopupRolSel}"/>  
+                    <h:panelGrid id="panelPricipalPlantillayRolSel" columns="2">
+                        <h:panelGrid id="panelGridPlantillayRol" columns="1">
+                            <p:outputLabel value="1.2.2.3.1 Pantilla Seleccionada(Acceso a Datos por Niveles, Roles y Financiamiento) "/>
+                            <h:panelGrid columns="2">
+                                <p:inputText value="1" size="2"/>
+                                <p:inputText value="NIVEL DE PLAN DE TRABAJO-ACCESO A TODA LA INSTITUCION " size="60"/>
+                            </h:panelGrid>                       
+                            <p:outputLabel value="1.2.2.3.2 Rol Seleccionado"/>
+                            <p:inputText value="Rol 15- CONTROL Y SEGUIMINETO A LAS DONACIONES " size="60"/>
+                            <p:outputLabel value="1.2.2.3.3 Nivel de control de Financiamiento"/>
+                            <p:outputLabel value="A)Fuente de Financiamiento"/>
+
+                            <p:dataTable id="tblPlantillasRol" var="ent4" value="#{rolesBean.entidades6}" widgetVar="tblRoles">  
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{ent4.id}" />  
+                                </p:column>
+                                <p:column headerText="Procedimiento ú Opcion">
+                                    <h:outputText value="#{ent4.nombre}" />  
+                                </p:column>                                
+                            </p:dataTable> 
+
+                            <p:outputLabel value="B)Planes Operativos Anuales"/>
+
+                            <p:dataTable id="tblPoa" var="ent4" value="#{rolesBean.entidades6}" widgetVar="tblRoles">  
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{ent4.id}" />  
+                                </p:column>
+                                <p:column headerText="Procedimiento ú Opcion">
+                                    <h:outputText value="#{ent4.nombre}" />  
+                                </p:column>                                
+                            </p:dataTable>
+
+                            <p:outputLabel value="C)Metas Asociadas al Poa"/>
+
+                            <p:dataTable id="tblMetasPoa" var="ent4" value="#{rolesBean.entidades6}" widgetVar="tblRoles">  
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{ent4.id}" />  
+                                </p:column>
+                                <p:column headerText="Procedimiento ú Opcion">
+                                    <h:outputText value="#{ent4.nombre}" />  
+                                </p:column>   
+                                <p:column headerText="Procedimiento ú Opcion">
+                                    <p:commandButton value="+" style="float: right" onclick="dlgMetas.show();"/>
+                                </p:column>
+                            </p:dataTable> 
+
+                            <h:panelGrid style="float: right" columns="2">
+                                <p:commandButton value="Cancelar" style="float: right"/>
+                                <p:commandButton value="Aceptar" style="float: right"/>
+                            </h:panelGrid>
+                        </h:panelGrid>
+                        <p:outputLabel value="Imagen"/>
+                    </h:panelGrid>
+                </p:dialog>
+
+                    <p:dialog id="dlgProcedimiento" widgetVar="dlgProcedimiento" header="Meta" visible="#{rolesBeanAutorizacion.showProcedimiento}" style="max-height: 600px !important"  >
+                        <p:ajax event="close" listener="#{rolesBeanAutorizacion.cerrarPopupProcedimiento}"/>  
+                    <h:panelGrid id="panelPricipalMeta" columns="2" >
+                        <h:panelGrid id="panelGridMeta" columns="1">
+                            <p:outputLabel value="1 Meta Seleccionada de la fuente de Financiamiento"/>
+                            <h:panelGrid columns="2">
+                                <p:inputText value="1" size="2"/>
+                                <p:inputText value="NIVEL DE PLAN DE TRABAJO-ACCESO A TODA LA INSTITUCION " size="60"/>
+                            </h:panelGrid>                       
+                            <p:outputLabel value="a)Actividades Asociadas"/>
+                            <p:dataTable id="tblMetas" var="ent4" value="#{rolesBean.entidades6}" widgetVar="tblRoles">  
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{ent4.id}" />  
+                                </p:column>
+                                <p:column headerText="Procedimiento ú Opcion">
+                                    <h:outputText value="#{ent4.nombre}" />  
+                                </p:column>                                
+                            </p:dataTable> 
+                            <h:panelGrid style="float: right" columns="2">
+                                <p:commandButton value="Cancelar" style="float: right"/>
+                                <p:commandButton value="Aceptar" style="float: right"/>
+                            </h:panelGrid>
+                        </h:panelGrid>
+                        <p:outputLabel value="Imagen"/>
+                    </h:panelGrid>
+                </p:dialog>
+                    
+                    
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
