@@ -1,0 +1,71 @@
+body {
+    width:1024px;
+    margin:0 auto;
+    background-image: url(../images/macback.png);
+    font-family:geneva, arial, helvetica, sans-serif;
+    font-size:70%;
+    padding:0;
+}
+
+.textoMayuscula {
+    text-transform: uppercase;
+}
+
+.textoMinuscula {
+    text-transform: lowercase;
+}
+
+/*
+ICONOS
+*/
+.nuevo{
+    background:url('../images/nuevo.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.modificar{
+    background:url('../images/modificar.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.recuperar{
+    background:url('../images/recuperar.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.imprimir{
+    background:url('../images/imprimir.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.guardar{
+    background:url('../images/guardar.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+.salir{
+    background:url('../images/salir.png')  no-repeat !important;
+    height:16px;
+    width:20px;
+}
+
+
+/*
+ESTILOS PARA TABLAS
+*/
+.alineadoTop td {
+    vertical-align: top; 
+}
+
+.alineadoMiddle td {
+    vertical-align: middle; 
+}
+
+.ui-wizard-step-title {
+    font-size: 12px !important;
+}

@@ -1,0 +1,396 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <link href="#{request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
+                <style>
+                    .menu1 span:first-child  {
+                        width: 170px;
+                    }
+                    .menu2 span:first-child  {
+                        width: 100px;
+                    }
+                    .ui-wizard-step-title {
+                        font-size:14px !important;
+                    }
+
+                    .ui-dialog{
+                        top: 50px !important;
+                    }
+                </style>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            <h:form id="frIncial">
+                <p:growl id="growl" showDetail="true" sticky="false" />
+
+                <p:menubar id="mbar">
+                    <f:facet name="options">
+                        <p:outputLabel value="Usuario: "/>
+                        <p:outputLabel value="#{registroBean.usuario}" style="font-weight: bold;"/>
+                        <p:spacer width="10" height="8"/>
+                        <p:outputLabel value="Estado:" />
+                        <p:outputLabel value="#{registroBean.estadoRegistro}" style="font-weight: bold;" />
+                        <p:spacer width="10" height="8"/>
+                        <p:commandButton value="Guardar" icon="guardar" action="#{registroBean.guardar}" ajax="true" update="growl pnlProductos mbar pnlLstProductos" />
+                        <p:spacer width="10" height="8"/>
+                        <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this"/>
+                    </f:facet>
+                </p:menubar>
+
+                <p:dialog widgetVar="dlgPersonas" closable="true" width="980" resizable="false">
+                    <f:facet name="header">
+                        <h:outputText value="#{registroBean.tituloWizard}" id="tituloWizard"/>
+                    </f:facet>
+                    <p:wizard flowListener="#{registroBean.onFlowProcess}" id="wzRegistro" widgetVar="wzRegistro" nextLabel="Siguiente" backLabel="Atras" 
+                              showStepStatus="false">
+                        <p:tab title="1 - Persona o Representante Legal" id="paso1">
+                            <p:panel id="pnlPersona" footer="(*) Campos obligatorios" style="height: 350px">
+                                <f:facet name="header">
+                                    <p:graphicImage url="#{request.contextPath}/../resources/images/representante_14.png" />
+                                    <p:spacer width="10"/>
+                                    <h:outputText value="1 - Persona o Representante Legal"/>
+                                </f:facet>
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="1. Genero: *" for="cbGenero"/>
+                                    <p:selectOneMenu id="cbGenero" value="#{registroBean.currentPersona.identificadorDeGenero}" disabled="#{registroBean.disable}">
+                                        <f:selectItem itemLabel="Seleccione un genero"/>
+                                        <f:selectItems value="#{registroBean.lstGeneros}" var="gen" itemLabel="#{gen.descripcionDelGenero}" itemValue="#{gen.identificadorDeGenero}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="2. Primer Nombre: *" for="txtPriNombre"/>
+                                    <h:panelGroup>
+                                        <p:inputText id="txtPriNombre" value="#{registroBean.currentPersona.primerNombre}" onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="3. Segundo Nombre:" for="txtSegNombre"/>
+                                        <p:spacer width="5"/>
+                                        <p:inputText id="txtSegNombre" value="#{registroBean.currentPersona.segundoNombre}" onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}"/>
+                                    </h:panelGroup>
+
+                                    <p:outputLabel value="4. Primer Apellido: *" for="txtPriApellido"/>
+                                    <h:panelGroup>
+                                        <p:inputText id="txtPriApellido" value="#{registroBean.currentPersona.primerApellido}"  onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="5. Segundo Apellido:" for="txtSegApellido"/>
+                                        <p:spacer width="5"/>
+                                        <p:inputText id="txtSegApellido" value="#{registroBean.currentPersona.segundoApellido}" onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="6. Apellido Casada:" for="txtApeCasada"/>
+                                        <p:spacer width="5"/>
+                                        <p:inputText id="txtApeCasada" value="#{registroBean.currentPersona.ACasada}" onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}"/>
+                                    </h:panelGroup>
+
+                                    <p:outputLabel value="7. Domicilio: *" for="txtDomicilio" />
+                                    <h:panelGroup>
+                                        <p:inputText id="txtDomicilio" size="64" value="#{registroBean.currentPersona.domicilio}" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="8. Teléfono: *" for="txtTelPersona" />
+                                        <p:spacer width="5"/>
+                                        <p:inputMask id="txtTelPersona" size="8" value="#{registroBean.currentPersona.numeroTelefono}" mask="99999999" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="9. Celular:" for="txtCelular" />
+                                        <p:spacer width="5"/>
+                                        <p:inputMask id="txtCelular" size="8" value="#{registroBean.currentPersona.numeroCelular}" mask="99999999" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}"/>
+                                    </h:panelGroup>
+
+                                    <p:outputLabel value="10. Departamento: *" for="cbDepaPersona" />
+                                    <h:panelGrid columns="7">
+                                        <p:selectOneMenu id="cbDepaPersona" value="#{registroBean.currentPersona.identificadorDelDepartamento}" disabled="#{registroBean.disable}">
+                                            <f:selectItem itemLabel="Seleccione un departamento"/>
+                                            <f:selectItems value="#{registroBean.lstDepaPer}" var="dep" itemLabel="#{dep.nombre}" itemValue="#{dep.identificadorDelDepartamento}"/>
+                                            <p:ajax update="cbMuniPersona"/>
+                                        </p:selectOneMenu>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="11. Municipio: *" for="cbMuniPersona" />
+                                        <p:selectOneMenu id="cbMuniPersona" style="width: 250px;" value="#{registroBean.currentPersona.idMunicipio}" >
+                                            <f:selectItem itemLabel="Seleccione un municipio"/>
+                                            <f:selectItems value="#{registroBean.lstMunPer}" var="mun" itemLabel="#{mun.nombre}" itemValue="#{mun.id_municipio}"/>
+                                        </p:selectOneMenu>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="12. Cantón:" for="txtCanton" />
+                                        <p:inputText id="txtCanton" size="20" value="#{registroBean.currentPersona.canton}" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}"/>
+                                    </h:panelGrid>
+
+
+                                    <p:outputLabel value="13. Fecha nac.:" for="clFechaNac" />
+                                    <h:panelGrid columns="7">
+                                        <p:calendar id="clFechaNac" size="7" pattern="dd/MM/yyyy" navigator="true" value="#{registroBean.currentPersona.fechaDeNacimiento}" disabled="#{registroBean.disable}"/>
+                                        <p:spacer width="10" />
+                                        <p:outputLabel value="14. Lectura firma:" for="txtLecturaFirma" />
+                                        <p:inputText id="txtLecturaFirma" size="10" value="#{registroBean.currentPersona.lecturaDeFirma}" disabled="#{registroBean.disable}"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="15. Origen:" for="cbOrigen" />
+                                        <p:selectOneMenu id="cbOrigen" value="#{registroBean.currentPersona.identificadorOrigenlCiudadano}" disabled="#{registroBean.disable}">
+                                            <f:selectItem itemLabel="Seleccione un origen"/>
+                                            <f:selectItems value="#{registroBean.lstOrigenCiudadano}" var="org" itemLabel="#{org.descripcionDeCiudadania}" itemValue="#{org.identificadorOrigenlCiudadano}"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGrid>
+
+                                    <p:outputLabel value="16. Tipo de doc.: *" for="cbTipoDoc" />
+                                    <h:panelGrid columns="7">
+                                        <p:selectOneMenu id="cbTipoDoc" value="#{registroBean.currentPersona.identificadorDeDocumentoLegal}" disabled="#{registroBean.disable}">
+                                            <f:selectItem itemLabel="Seleccione un tipo"/>
+                                            <f:selectItems value="#{registroBean.lstTipoDocLegal}" var="tipoD" itemLabel="#{tipoD.descripcionDeDocumentoLegal}" itemValue="#{tipoD.identificadorDeDocumentoLegal}"/>
+                                        </p:selectOneMenu>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="17. Num. doc.: *" for="txtNumDoc" />
+                                        <p:inputText id="txtNumDoc" size="10" value="#{registroBean.currentPersona.numeroDocumentoLegal}" disabled="#{registroBean.disable}"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="18. Luga y fecha exp.:" for="txtLugarFecha" />
+                                        <p:inputText id="txtLugarFecha" size="20" value="#{registroBean.currentPersona.lugarYFechaExpedicion}" disabled="#{registroBean.disable}"/>
+                                    </h:panelGrid>
+
+                                    <p:outputLabel value="19. N.I.T.:" for="txtNitPersona" />
+                                    <h:panelGrid columns="7">
+                                        <p:inputMask id="txtNitPersona" size="17" mask="9999-999999-999-9" value="#{registroBean.currentPersona.numeroDeNit}" disabled="#{registroBean.disable}"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="20. Profesión:" for="txtProfesion" />
+                                        <p:inputText id="txtProfesion" value="#{registroBean.currentPersona.profesion}" disabled="#{registroBean.disable}"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="21. Correo electrónico:" for="txtEMailPersona" />
+                                        <p:inputText id="txtEMailPersona" size="20" value="#{registroBean.currentPersona.EMail}" required="true" requiredMessage="Es necesario el correo electrónico" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}"/>
+                                    </h:panelGrid>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab title="2 - Empresa" id="paso2">
+                            <p:panel id="pnlEmpresa" footer="(*) Campos obligatorios" >
+                                <f:facet name="header">
+                                    <p:graphicImage url="#{request.contextPath}/../resources/images/empresa_14.png" />
+                                    <p:spacer width="10"/>
+                                    <h:outputText value="Datos generales de la empresa"/>
+                                </f:facet>
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="1. Personería: *" for="cbPersoneria" />
+                                    <h:panelGrid columns="6">
+                                        <p:selectOneMenu id="cbPersoneria" value="#{registroBean.currentEmpresa.identificadorDePersoneria}" disabled="#{registroBean.disable}">
+                                            <f:selectItem itemLabel="Seleccione una personería"/>
+                                            <f:selectItems value="#{registroBean.lstTipoDePersoneria}" var="tipoP" itemLabel="#{tipoP.descripcionDePersoneria}" itemValue="#{tipoP.identificadorDePersoneria}"/>
+                                            <p:ajax update="pnlPersoneria" listener="#{registroBean.tipoPersoneria}"/>
+                                        </p:selectOneMenu>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="2. País: *" for="cbPais"/>
+                                        <p:selectOneMenu id="cbPais" value="#{registroBean.currentEmpresa.pais}"  disabled="#{registroBean.disable}">
+                                            <f:selectItem itemLabel="Seleccione un país"/>
+                                            <f:selectItems value="#{registroBean.lstPaises}" var="pais" itemLabel="#{pais.descripcion}" itemValue="#{pais.pais}" />
+                                        </p:selectOneMenu>
+                                        <p:spacer width="10"/>
+                                        <h:panelGrid columns="5">
+                                            <p:outputLabel value="3. Es contribuyente:" for="chbContribuyente"/>
+                                            <p:selectBooleanCheckbox id="chbContribuyente" value="#{registroBean.currentEmpresa.contribuyente}"/>
+                                            <p:spacer width="10"/>
+                                            <p:outputLabel value="4. No I.V.A.:" for="txtIva"/>
+                                            <p:inputText id="txtIva" size="7" value="#{registroBean.currentEmpresa.numeroIVA}" disabled="#{registroBean.disable}"/>
+                                        </h:panelGrid>
+                                    </h:panelGrid>
+
+                                    <p:outputLabel value="5. No ISSS Patronal:" for="txtIsssEmp" />
+                                    <h:panelGrid columns="6">
+                                        <p:inputText id="txtIsssEmp" value="#{registroBean.currentEmpresa.numeroIsssPatronal}" disabled="#{registroBean.disable}"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="6. No Reg. Comercio:" for="txtRegComer" />
+                                        <p:inputText id="txtRegComer" value="#{registroBean.currentEmpresa.nombreComercial}" disabled="#{registroBean.disable}"/>
+
+                                    </h:panelGrid>
+
+                                    <p:outputLabel value="7. Nombre Comercial:" for="txtNomComer"/>
+                                    <p:inputText id="txtNomComer" size="110" value="#{registroBean.currentEmpresa.nombreComercial}" disabled="#{registroBean.disable}"/>
+
+                                    <p:outputLabel value="8. Dirección:" for="txtDireccion"/>
+                                    <h:panelGroup>
+                                        <p:inputText id="txtDireccion" size="110" value="#{registroBean.currentEmpresa.direccionCompleta}" disabled="#{registroBean.disable}"/>
+                                    </h:panelGroup>
+
+                                    <p:outputLabel value="9. Teléfono:" for="txtTelefonoEmp" />
+                                    <h:panelGrid columns="8">
+                                        <p:inputText id="txtTelefonoEmp" size="8" value="#{registroBean.currentEmpresa.telefonos}" disabled="#{registroBean.disable}"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="10. Fax:" for="txtFax" />
+                                        <p:inputText id="txtFax" value="#{registroBean.currentEmpresa.fax}" disabled="#{registroBean.disable}"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="11. Celular.:" for="txtCelularEmp" />
+                                        <p:inputMask id="txtCelularEmp" size="7" mask="99999999" value="#{registroBean.currentEmpresa.numeroDeCelular}" disabled="#{registroBean.disable}"/>
+                                    </h:panelGrid>
+
+                                    <p:outputLabel value="12. Departamento:" for="cbDepartamentoEmp" />
+                                    <h:panelGrid columns="8">                        
+                                        <p:selectOneMenu id="cbDepartamentoEmp" value="#{registroBean.currentEmpresa.identificadorDelDepartamento}" disabled="#{registroBean.disable}">
+                                            <f:selectItem itemLabel="Seleccione un departamento"/>
+                                            <f:selectItems value="#{registroBean.lstDepaEmp}"  var="depa" itemLabel="#{depa.nombre}" itemValue="#{depa.codigo_departamento}"/>
+                                            <p:ajax update="cbMunicipioEmp" />
+                                        </p:selectOneMenu>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="13. Municipio:" for="cbMunicipioEmp" />
+                                        <p:selectOneMenu id="cbMunicipioEmp" style="width: 260px;" value="#{registroBean.currentEmpresa.idMunicipio}" disabled="#{registroBean.disable}">
+                                            <f:selectItem itemLabel="Seleccione un municipio"/>
+                                            <f:selectItems value="#{registroBean.lstMunEmp}"  var="mun" itemLabel="#{mun.nombre}" itemValue="#{mun.id_municipio}"/>
+                                        </p:selectOneMenu>
+                                        <p:spacer width="10"/>
+
+                                    </h:panelGrid>
+                                </h:panelGrid>
+                            </p:panel>
+
+                            <p:panel id="pnlPersoneria" footer="(*) Campos obligatorios" visible="#{registroBean.mostrarPnlJuridica}" >
+                                <f:facet name="header">
+                                    <p:graphicImage url="#{request.contextPath}/../resources/images/maletin_14.png" />
+                                    <p:spacer width="10"/>
+                                    <h:outputText value="Persona Jurídica"/>
+                                </f:facet>
+
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="a. Razon Social:" for="txtRazonSocial" />
+                                    <p:inputText id="txtRazonSocial" size="75" value="#{registroBean.currentEmpresa.razonSocial}" disabled="#{registroBean.disable}"/>
+
+                                    <p:spacer width="10"/>
+                                    <p:outputLabel value="b. Abrev. según escritura:" for="txtAbreviatura" />
+                                    <p:inputText id="txtAbreviatura" value="#{registroBean.currentEmpresa.abreviaturaSegunEscritura}" disabled="#{registroBean.disable}"/>
+
+                                    <p:outputLabel value="c. Fecha constitución:" for="clFechaCons" />
+                                    <h:panelGrid columns="8">
+                                        <p:calendar id="clFechaCons" size="7" pattern="dd/MM/yyyy" navigator="true" value="#{registroBean.currentEmpresa.fechaDeConstitucion}" disabled="#{registroBean.disable}"/>
+                                        <p:spacer width="10"/>
+                                        <p:outputLabel value="d. Regimen de Adquisición:" for="cbRegimen" />
+                                        <p:selectOneMenu id="cbRegimen" value="#{registroBean.idRegimen}" disabled="#{registroBean.disable}">
+                                            <f:selectItem itemLabel="Seleccione un regimen"/>
+                                            <f:selectItems value="#{registroBean.lstRegimenAdmon}" var="regA" itemValue="#{regA.identificadorDelRegimenDeAdmon}" itemLabel="#{regA.descripcionDelRegimenAdmon}"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGrid>
+                                    <p:spacer width="10"/>
+                                    <p:outputLabel value="e. N.I.T.:" for="txtNitEmp" />
+                                    <p:inputMask id="txtNitEmp" size="17" mask="9999-999999-999-9" value="#{registroBean.currentEmpresa.numeroDeNit}" disabled="#{registroBean.disable}"/>
+
+                                    <p:outputLabel value="f. Sito Web:" for="txtWebEmp" />
+                                    <p:inputText id="txtWebEmp" size="50" value="#{registroBean.currentEmpresa.sitioWeb}" disabled="#{registroBean.disable}"/>
+                                    <p:spacer width="10"/>
+                                    <p:outputLabel value="g. Correo electrónico:" for="txtEmailEmp" />
+                                    <p:inputText id="txtEmailEmp" size="25" value="#{registroBean.currentEmpresa.correoElectronico}" disabled="#{registroBean.disable}"/>
+
+                                    <p:outputLabel value="h. Giro comercial:" for="txtGiro" />
+                                    <p:inputText id="txtGiro" size="50" value="#{registroBean.currentEmpresa.giroEmpresa}" disabled="#{registroBean.disable}"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab title="3 - Ubicación" id="paso3">
+                            <p:panel id="pnlUbicacion" header="3 - Ubicación">
+                                <f:facet name="header">
+                                    <p:graphicImage url="#{request.contextPath}/../resources/images/map.png" />
+                                    <p:spacer width="10"/>
+                                    <h:outputText value="Ubicación"/>
+                                </f:facet>
+
+                                <h:outputText value="INSTRUCCIONES:" /><br />
+                                <h:outputText value="- Seleccione cada uno de los departamentos en los que desea participar" />
+                                <p:separator/>
+                                <br />
+                                <p:selectManyCheckbox layout="grid" columns="3"  id="smcUbicacion" value="#{registroBean.departamentosUbicacion}" disabled="#{registroBean.disable}" valueChangeListener="#{registroBean.cambioUbicacion}">
+                                    <f:selectItem itemLabel="01. AHUACHAPAN" itemValue="1" />
+                                    <f:selectItem itemLabel="02. SANTA ANA"  itemValue="2"/>
+                                    <f:selectItem itemLabel="03. SONSONATE" itemValue="3"/>
+                                    <f:selectItem itemLabel="04. CHALATENANGO" itemValue="4"/>
+                                    <f:selectItem itemLabel="05. LA LIBERTAD" itemValue="5"/>
+                                    <f:selectItem itemLabel="06. SAN SALVADOR" itemValue="6"/>
+                                    <f:selectItem itemLabel="07. CUSCATLAN" itemValue="7"/>
+                                    <f:selectItem itemLabel="08. LA PAZ" itemValue="8"/>
+                                    <f:selectItem itemLabel="09. CABAÑAS" itemValue="9"/>
+                                    <f:selectItem itemLabel="10. SAN VICENTE" itemValue="10"/>
+                                    <f:selectItem itemLabel="11. USULUTAN" itemValue="11"/>
+                                    <f:selectItem itemLabel="12. SAN MIGUEL" itemValue="12"/>
+                                    <f:selectItem itemLabel="13. MORAZAN" itemValue="13"/>
+                                    <f:selectItem itemLabel="14. LA UNION" itemValue="14"/>
+                                    <f:selectItem itemLabel="00. TODO EL PAIS" itemValue="0"/>
+                                    <p:ajax update="smcUbicacion" />
+                                </p:selectManyCheckbox>
+
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab title="4 - Que Ofrece" id="paso4">
+                            <p:panel id="pnlProductos" header="Que Ofrece">
+                                <f:facet name="header">
+                                    <p:graphicImage url="#{request.contextPath}/../resources/images/product.png" />
+                                    <p:spacer width="10"/>
+                                    <h:outputText value="Que Ofrece"/>
+                                </f:facet>
+                                <h:panelGrid columns="2" styleClass="alineadoTop">
+                                    <p:outputLabel value="1. Sector Economico:" for="cbSectorEconomico"/>
+                                    <p:selectOneMenu id="cbSectorEconomico" disabled="#{registroBean.disable}" value="#{registroBean.idSector}">
+                                        <f:selectItem itemLabel="Seleccione un Sector"/>
+                                        <f:selectItems value="#{registroBean.lstSectorEconomico}" var="sec" itemValue="#{sec.identificadorDelSectorEconomico}" itemLabel="#{sec.descripcionDelSectorEconomico}"/>
+                                        <p:ajax update="cbSubSector" listener="#{registroBean.setLstSubSectorEconomico}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="2. Sub-Sector:" for="cbSubSector"/>
+                                    <p:selectOneMenu id="cbSubSector" disabled="#{registroBean.disable}" value="#{registroBean.idSubSector}">
+                                        <f:selectItem itemLabel="Seleccione un sub-sector"/>
+                                        <f:selectItems value="#{registroBean.lstSubSector}" var="sec" itemValue="#{sec.identificadorDelSectorEconomico}" itemLabel="#{sec.descripcionDelSectorEconomico}"/>
+                                        <p:ajax update="txaEspecifique" listener="#{registroBean.activarEspecificacion}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="3. Especifique:" for="txaEspecifique" />
+                                    <p:inputTextarea id="txaEspecifique" disabled="#{!registroBean.especificacion}" value="#{registroBean.espClasificacion}"/>
+
+                                    <p:commandButton value="Agregar" action="#{registroBean.agregarClasificacion}" update="tblOferta pnlProductos"/>
+                                </h:panelGrid>
+                            </p:panel>
+
+                            <p:panel id="pnlLstProductos" header="Lista de Bienes y Servicios">
+                                <p:dataTable id="tblOferta" emptyMessage="Sin registros" value="#{registroBean.lstClasificacion}" var="clasificacion">
+                                    <p:column headerText="Id">
+                                        <h:outputText value="#{clasificacion.identificadorClasificacionSectorEconomico}" />
+                                    </p:column>
+
+                                    <p:column headerText="Descripción">
+                                        <h:outputText value="#{clasificacion.especializacionPorSubsector}" />
+                                    </p:column>
+                                </p:dataTable>
+                            </p:panel>
+                        </p:tab>
+                    </p:wizard>
+                </p:dialog>
+
+                <div style="position: fixed; bottom: 50px; left: 50%; margin-left: auto; margin-left: -365px;" >
+                    <p:graphicImage url="#{request.contextPath}/../resources/images/flecha_inicio.png"/>
+                    <p:commandLink actionListener="#{registroBean.abrirAsistente}" ajax="true" process="@this" >
+                        <p:graphicImage id="imgPaso1" url="#{registroBean.paso1}"/>
+                        <f:param name="opcion" value="0"/>
+                    </p:commandLink>
+                    <p:graphicImage url="#{request.contextPath}/../resources/images/flecha.png"/>
+                    <p:commandLink actionListener="#{registroBean.abrirAsistente}" ajax="true" process="@this">
+                        <p:graphicImage id="imgPaso2" url="#{registroBean.paso2}" />
+                        <f:param name="opcion" value="1"/>
+                    </p:commandLink>
+                    <p:graphicImage url="#{request.contextPath}/../resources/images/flecha.png"/>
+                    <p:commandLink actionListener="#{registroBean.abrirAsistente}" ajax="true" process="@this">
+                        <p:graphicImage id="imgPaso3" url="#{registroBean.paso3}" />
+                        <f:param name="opcion" value="2"/>
+                    </p:commandLink>
+                    <p:graphicImage url="#{request.contextPath}/../resources/images/flecha.png"/>
+                    <p:commandLink actionListener="#{registroBean.abrirAsistente}" ajax="true" process="@this">
+                        <p:graphicImage id="imgPaso4" url="#{registroBean.paso4}" />
+                        <f:param name="opcion" value="3"/>
+                    </p:commandLink>
+                    <p:graphicImage url="#{request.contextPath}/../resources/images/flecha_fin.png"/>
+                    <br />
+                    <p:spacer width="48" height="10"/>
+                    <h:outputText value="Persona o Repre. Legal" style="font-size: 12px; font-weight: bold; color: white;"/>
+                    <p:spacer width="78" height="10"/>
+                    <h:outputText value="Empresa" style="font-size: 12px; font-weight: bold; color: white;"/>
+                    <p:spacer width="104" height="10"/>
+                    <h:outputText value="Ubicación" style="font-size: 12px; font-weight: bold; color: white;"/>
+                    <p:spacer width="104" height="10"/>
+                    <h:outputText value="Que Ofrece" style="font-size: 12px; font-weight: bold; color: white;"/>
+                </div>
+            </h:form>
+        </h:body>
+    </f:view>
+</html>
