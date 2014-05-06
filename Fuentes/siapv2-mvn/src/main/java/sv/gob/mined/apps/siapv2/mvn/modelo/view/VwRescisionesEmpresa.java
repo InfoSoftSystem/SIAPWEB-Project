@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author Infosoft
  */
-public class VwRecesionesEmpresa {
+public class VwRescisionesEmpresa {
 
     private Integer identificadorRecesion;
     private String razonSocial;
@@ -20,10 +20,10 @@ public class VwRecesionesEmpresa {
     private BigDecimal montoPagado;
     private BigDecimal montoRemanente;
     private String descripcionTipoRecesion;
-    private String descirpcionRecesion;
+    private String descripcionRecesion;
     private Integer estadoDeEliminacion;
 
-    public VwRecesionesEmpresa() {
+    public VwRescisionesEmpresa() {
     }
 
     public Integer getIdentificadorRecesion() {
@@ -82,12 +82,12 @@ public class VwRecesionesEmpresa {
         this.descripcionTipoRecesion = descripcionTipoRecesion;
     }
 
-    public String getDescirpcionRecesion() {
-        return descirpcionRecesion;
+    public String getDescripcionRecesion() {
+        return descripcionRecesion;
     }
 
-    public void setDescirpcionRecesion(String descirpcionRecesion) {
-        this.descirpcionRecesion = descirpcionRecesion;
+    public void setDescripcionRecesion(String descripcionRecesion) {
+        this.descripcionRecesion = descripcionRecesion;
     }
 
     public Integer getEstadoDeEliminacion() {

@@ -13,7 +13,7 @@ import sv.gob.mined.apps.siapv2.mvn.dao.PersistenciaDao;
  * @author Infososft
  */
 
-public class RecesionesOferente implements PersistenciaDao{
+public class RescisionesOferente implements PersistenciaDao{
     private Integer identificadorRecesion;
     private Integer identificadorPrimarioOferente;
     private Integer tipoRecesion;
@@ -28,10 +28,10 @@ public class RecesionesOferente implements PersistenciaDao{
     private Integer estadoDeEliminacion;
     private String name;
 
-    public RecesionesOferente() {
+    public RescisionesOferente() {
     }
 
-    public RecesionesOferente(Integer identificadorRecesion) {
+    public RescisionesOferente(Integer identificadorRecesion) {
         this.identificadorRecesion = identificadorRecesion;
     }
 
@@ -113,10 +113,10 @@ public class RecesionesOferente implements PersistenciaDao{
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof RecesionesOferente)) {
+        if (!(object instanceof RescisionesOferente)) {
             return false;
         }
-        RecesionesOferente other = (RecesionesOferente) object;
+        RescisionesOferente other = (RescisionesOferente) object;
         if ((this.identificadorRecesion == null && other.identificadorRecesion != null) || (this.identificadorRecesion != null && !this.identificadorRecesion.equals(other.identificadorRecesion))) {
             return false;
         }

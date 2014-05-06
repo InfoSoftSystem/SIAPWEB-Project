@@ -9,15 +9,15 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.Empresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.FaltasOferente;
 import sv.gob.mined.apps.siapv2.mvn.modelo.GarantiasOferente;
 import sv.gob.mined.apps.siapv2.mvn.modelo.MultasOferente;
-import sv.gob.mined.apps.siapv2.mvn.modelo.RecesionesOferente;
+import sv.gob.mined.apps.siapv2.mvn.modelo.RescisionesOferente;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoFaltas;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoGarantias;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoMultas;
-import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRecesion;
+import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRescision;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwFaltasEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwMultasEmpresa;
-import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwRecesionesEmpresa;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwRescisionesEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwTrasladoEmpresa;
 
 /**
@@ -36,7 +36,7 @@ public interface BancoProveedoresBo {
     
     public List<TipoGarantias> getLstTipoGarantias();
     
-    public List<TipoRecesion> getLstTipoRecesiones();
+    public List<TipoRescision> getLstTipoRescisiones();
 
     public List<VwFaltasEmpresa> getLstFaltasOferente(Integer idOferente);
     
@@ -44,7 +44,7 @@ public interface BancoProveedoresBo {
     
     public List<VwGarantiasEmpresa> getLstGarantiasOferente(Integer idOferente);
     
-    public List<VwRecesionesEmpresa> getLstRecesionesOferente(Integer idOferente);
+    public List<VwRescisionesEmpresa> getLstRescisionesOferente(Integer idOferente);
     
     public List<VwTrasladoEmpresa> getLstTrasladoEmpresa();
 
@@ -56,13 +56,13 @@ public interface BancoProveedoresBo {
     
     public MultasOferente getMultaById(Integer id);
     
-    public RecesionesOferente getRecesionById(Integer id);
+    public RescisionesOferente getRescisionById(Integer id);
     
     public int saveMultaOferente(MultasOferente multa);
     
     public int saveGarantiaOferente(GarantiasOferente garantia);
     
-    public int saveRecesionOferente(RecesionesOferente recesion);
+    public int saveRescisionOferente(RescisionesOferente rescision);
     
     public int trasladoOferente(Integer identificadorPrimerioDeLaEmpresa);
 }

@@ -12,7 +12,7 @@ import sv.gob.mined.apps.siapv2.mvn.dao.XJdbcTemplate;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoFaltas;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoGarantias;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoMultas;
-import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRecesion;
+import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRescision;
 
 /**
  *
@@ -43,8 +43,8 @@ public class TipoFaltasDaoImpl extends XJdbcTemplate implements CatalogoFaltasDa
     }
 
     @Override
-    public List<TipoRecesion> findTipoRecesion() {
+    public List<TipoRescision> findTipoRescision() {
         String sql = "SELECT * FROM TipoRecesion";
-        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(TipoRecesion.class));
+        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(TipoRescision.class));
     }
 }

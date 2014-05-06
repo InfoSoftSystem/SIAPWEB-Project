@@ -24,7 +24,11 @@ public class FaltasOferenteDaoImpl extends XJdbcTemplate implements FaltasOferen
 
     @Override
     public List<VwFaltasEmpresa> findAllByOferente(Integer identificadorPrimarioOferente) {
-        String sql = "SELECT * FROM vw_faltas_empresa WHERE identificadorPrimarioOferente = " + identificadorPrimarioOferente + " and estadoeliminacion = 0 ";
+        String sql = "SELECT * "
+                + " FROM vw_faltas_empresa "
+                + " WHERE identificadorPrimarioOferente = " + identificadorPrimarioOferente + " "
+                + "   and estadoeliminacion = 0 "
+                + "   ORDER BY identificadorFalta desc";
         return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwFaltasEmpresa.class));
     }
 

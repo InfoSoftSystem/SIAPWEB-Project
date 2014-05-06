@@ -11,7 +11,7 @@ import java.util.Date;
  * @author Infosoft
  */
 
-public class TipoRecesion {
+public class TipoRescision {
     private Integer idTipoRecesion;
     private String codigoTipoRecesion;
     private String descripcionTipoRecesion;
@@ -22,10 +22,10 @@ public class TipoRecesion {
     private Integer estadoDeEliminacion;
     private String name;
 
-    public TipoRecesion() {
+    public TipoRescision() {
     }
 
-    public TipoRecesion(Integer idTipoRecesion) {
+    public TipoRescision(Integer idTipoRecesion) {
         this.idTipoRecesion = idTipoRecesion;
     }
 

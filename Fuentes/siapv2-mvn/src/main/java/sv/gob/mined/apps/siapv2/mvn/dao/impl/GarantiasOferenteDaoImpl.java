@@ -39,7 +39,11 @@ public class GarantiasOferenteDaoImpl extends XJdbcTemplate implements Garantias
 
     @Override
     public List<VwGarantiasEmpresa> findAllByOferente(Integer identificadorPrimarioOferente) {
-        String sql = "SELECT * FROM vw_garantias_empresa WHERE identificadorPrimarioOferente = " + identificadorPrimarioOferente;
+        String sql = "SELECT * "
+                + "  FROM vw_garantias_empresa "
+                + " WHERE identificadorPrimarioOferente = " + identificadorPrimarioOferente 
+                + "   AND estadodeeliminacion = 0 "
+                + "   ORDER BY identificadorGarantia desc";
         return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwGarantiasEmpresa.class));
     }
 

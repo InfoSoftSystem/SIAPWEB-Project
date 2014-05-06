@@ -13,21 +13,21 @@ import sv.gob.mined.apps.siapv2.mvn.dao.FaltasOferenteDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.CatalogoFaltasDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.GarantiasOferenteDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.MultasOferenteDao;
-import sv.gob.mined.apps.siapv2.mvn.dao.RecesionesOferenteDao;
+import sv.gob.mined.apps.siapv2.mvn.dao.RescisionesOferenteDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.TrasladoEmpresaDao;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Empresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.FaltasOferente;
 import sv.gob.mined.apps.siapv2.mvn.modelo.GarantiasOferente;
 import sv.gob.mined.apps.siapv2.mvn.modelo.MultasOferente;
-import sv.gob.mined.apps.siapv2.mvn.modelo.RecesionesOferente;
+import sv.gob.mined.apps.siapv2.mvn.modelo.RescisionesOferente;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoFaltas;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoGarantias;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoMultas;
-import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRecesion;
+import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRescision;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwFaltasEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwMultasEmpresa;
-import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwRecesionesEmpresa;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwRescisionesEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwTrasladoEmpresa;
 
 /**
@@ -50,7 +50,7 @@ public class BancoProveedoresBoImpl implements BancoProveedoresBo {
     @Autowired
     private GarantiasOferenteDao garantiasOferente;
     @Autowired
-    private RecesionesOferenteDao recesionesOferente;
+    private RescisionesOferenteDao rescisionesOferente;
     @Autowired
     private TrasladoEmpresaDao trasladoOferente;
 
@@ -111,14 +111,14 @@ public class BancoProveedoresBoImpl implements BancoProveedoresBo {
     }
 
     @Override
-    public int saveRecesionOferente(RecesionesOferente recesion) {
-        recesionesOferente.setRecesionOferente(recesion);
-        if (recesion.getIdentificadorRecesion() == null) {
-            Integer id = recesionesOferente.create();
-            recesion.setIdentificadorRecesion(id);
+    public int saveRescisionOferente(RescisionesOferente rescision) {
+        rescisionesOferente.setRescisionOferente(rescision);
+        if (rescision.getIdentificadorRecesion() == null) {
+            Integer id = rescisionesOferente.create();
+            rescision.setIdentificadorRecesion(id);
             return id;
         } else {
-            return recesionesOferente.update();
+            return rescisionesOferente.update();
         }
     }
 
@@ -138,8 +138,8 @@ public class BancoProveedoresBoImpl implements BancoProveedoresBo {
     }
 
     @Override
-    public List<VwRecesionesEmpresa> getLstRecesionesOferente(Integer idOferente) {
-        return recesionesOferente.findAllByOferente(idOferente);
+    public List<VwRescisionesEmpresa> getLstRescisionesOferente(Integer idOferente) {
+        return rescisionesOferente.findAllByOferente(idOferente);
     }
 
     @Override
@@ -148,8 +148,8 @@ public class BancoProveedoresBoImpl implements BancoProveedoresBo {
     }
 
     @Override
-    public List<TipoRecesion> getLstTipoRecesiones() {
-        return tipoFaltas.findTipoRecesion();
+    public List<TipoRescision> getLstTipoRescisiones() {
+        return tipoFaltas.findTipoRescision();
     }
 
     @Override
@@ -173,8 +173,8 @@ public class BancoProveedoresBoImpl implements BancoProveedoresBo {
     }
 
     @Override
-    public RecesionesOferente getRecesionById(Integer id) {
-        return recesionesOferente.findById(id);
+    public RescisionesOferente getRescisionById(Integer id) {
+        return rescisionesOferente.findById(id);
     }
 
     @Override

@@ -92,6 +92,12 @@ public class GarantiasOferente implements PersistenciaDao{
 
     public void setEstadoGarantia(Integer estadoGarantia) {
         this.estadoGarantia = estadoGarantia;
+        
+        if(estadoGarantia == 1){
+            this.efectiva = Boolean.TRUE;
+        }else{
+            this.efectiva = Boolean.FALSE;
+        }
     }
 
     public Date getFechaDeInsercion() {
@@ -187,9 +193,9 @@ public class GarantiasOferente implements PersistenciaDao{
     public void setEfectiva(Boolean efectiva) {
         this.efectiva = efectiva;
         if(efectiva){
-            idTipoGarantia = 1;
+            estadoGarantia = 1;
         }else{
-            idTipoGarantia = 0;
+            estadoGarantia = 0;
         }
     }
 

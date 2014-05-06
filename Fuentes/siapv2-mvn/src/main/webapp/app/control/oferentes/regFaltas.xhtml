@@ -10,12 +10,12 @@
         <ui:define name="content">
             <h:form id="frmPrincipal" >
                 <p:menubar>
-                    <p:menuitem value="Nuevo" action="#{bancoProveedoresBean.nuevaFalta}" update="pnlEmpresas tblFaltas" icon="nuevo" ajax="true"/>
-                    <p:menuitem value="Modificar" icon="modificar" />
-                    <p:menuitem value="Eliminar" icon="eliminar" action="#{bancoProveedoresBean.eliminarFalta}" update="pnlEmpresas tblFaltas"/>
-                    <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarFalta}" icon="guardar" ajax="true" update="frmPrincipal" />
-                    <p:menuitem value="Recuperar" icon="recuperar" />
-                    <p:menuitem value="Imprimir" icon="imprimir" />
+                    <p:menuitem value="Nuevo" action="#{bancoProveedoresBean.nuevaFalta}" update="frmPrincipal pnlEmpresas tblFaltas" icon="nuevo" ajax="true"/>
+                    <p:menuitem value="Modificar" icon="modificar" action="#{bancoProveedoresBean.nuevaFalta}" update="pnlEmpresas tblFaltas frmPrincipal" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
+                    <p:menuitem value="Eliminar" icon="eliminar" action="#{bancoProveedoresBean.eliminarFalta}" update="pnlEmpresas tblFaltas frmPrincipal" disabled="#{bancoProveedoresBean.deshabilitadoEliminar}"/>
+                    <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarFalta}" icon="guardar" ajax="true" update="frmPrincipal" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                    <p:menuitem value="Recuperar" icon="recuperar" action="#{bancoProveedoresBean.nuevaFalta}" update="pnlEmpresas tblFaltas frmPrincipal" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
+                    <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
                     <f:facet name="options">
                         <p:outputLabel value="Usuario: "/>
                         <p:outputLabel value="ADMIN" style="font-weight: bold;"/>
@@ -52,7 +52,7 @@
                 </p:panel>
                 <p:dataTable id="tblFaltas" value="#{bancoProveedoresBean.lstFaltas}" var="falta" selectionMode="single" rowKey="#{falta.identificadorFalta}" rowIndexVar="rowId">
                     <p:ajax event="rowSelect" listener="#{bancoProveedoresBean.onRowSelectFalta}"   
-                            update=":frmPrincipal:pnlEmpresas" />  
+                            update=":frmPrincipal :frmPrincipal:pnlEmpresas" />  
                     <p:column headerText="Id">
                         <p:outputLabel value="#{falta.identificadorFalta}" />
                     </p:column>
@@ -89,8 +89,9 @@
                     <p:outputLabel value="Listado de empresas"/>
                     <p:dataTable id="tblEmpresas" value="#{bancoProveedoresBean.lstEmpresa}" var="emp" selectionMode="single" 
                                  selection="#{bancoProveedoresBean.currentEmpresa}" rowKey="#{emp.identificadorPrimarioDeLaEmpresa}">
-                        <p:ajax event="rowSelect"  oncomplete="dlgBuscarEmp.hide();" update=":frmPrincipal:pnlEmpresas :frmPrincipal:tblFaltas" />  
-
+                        <p:ajax event="rowSelect" listener="#{bancoProveedoresBean.onRowSelectEmpresa}" update=":frmPrincipal :frmPrincipal:pnlEmpresas :frmPrincipal:tblFaltas" oncomplete="dlgBuscarEmp.hide();" />  
+                        
+                        
                         <p:column headerText="Id" width="50">
                             <p:outputLabel value="#{emp.identificadorPrimarioDeLaEmpresa}" />
                         </p:column>

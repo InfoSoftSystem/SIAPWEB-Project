@@ -7,7 +7,10 @@ package sv.gob.mined.apps.siapv2.mvn.managedbeans;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.PostConstruct;
+import org.primefaces.component.calendar.Calendar;
+import org.primefaces.component.inputtext.InputText;
+import org.primefaces.component.inputtextarea.InputTextarea;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -17,15 +20,15 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.Empresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.FaltasOferente;
 import sv.gob.mined.apps.siapv2.mvn.modelo.GarantiasOferente;
 import sv.gob.mined.apps.siapv2.mvn.modelo.MultasOferente;
-import sv.gob.mined.apps.siapv2.mvn.modelo.RecesionesOferente;
+import sv.gob.mined.apps.siapv2.mvn.modelo.RescisionesOferente;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoFaltas;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoGarantias;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoMultas;
-import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRecesion;
+import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRescision;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwFaltasEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwMultasEmpresa;
-import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwRecesionesEmpresa;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwRescisionesEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwTrasladoEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.util.JsfUtil;
 
@@ -44,16 +47,18 @@ public class BancoProveedoresBean {
     private FaltasOferente currentFaltasOferente;
     private MultasOferente currentMultaOferente;
     private GarantiasOferente currentGarantiaOferente;
-    private RecesionesOferente currentRecesionesOferente;
+    private RescisionesOferente currentRescisionesOferente;
     private TipoFaltas currentFaltas;
     private List<Empresa> lstEmpresa;
     private List<VwFaltasEmpresa> lstFaltas;
     private List<VwMultasEmpresa> lstMultas;
     private List<VwGarantiasEmpresa> lstGarantias;
-    private List<VwRecesionesEmpresa> lstRecesion;
+    private List<VwRescisionesEmpresa> lstRescision;
     private List<VwTrasladoEmpresa> lstTrasladoEmpresa;
     private Boolean deshabilitado = true;
-
+    private Boolean deshabilitadoEliminar = true;
+    private Boolean deshabilitadoEfectiva = true;
+    
     public BancoProveedoresBean() {
     }
     @Autowired
@@ -71,8 +76,8 @@ public class BancoProveedoresBean {
         return bancoProv.getLstTipoGarantias();
     }
 
-    public List<TipoRecesion> getLstTipoRecesiones() {
-        return bancoProv.getLstTipoRecesiones();
+    public List<TipoRescision> getLstTipoRescisiones() {
+        return bancoProv.getLstTipoRescisiones();
     }
 
     public String getRazonSocial() {
@@ -97,7 +102,7 @@ public class BancoProveedoresBean {
 
     public void setCurrentEmpresa(Empresa currentEmpresa) {
         this.currentEmpresa = currentEmpresa;
-
+        
         if (currentEmpresa != null) {
             if (currentFaltasOferente != null) {
                 lstFaltas = bancoProv.getLstFaltasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
@@ -105,8 +110,8 @@ public class BancoProveedoresBean {
                 lstMultas = bancoProv.getLstMultasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
             } else if (currentGarantiaOferente != null) {
                 lstGarantias = bancoProv.getLstGarantiasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
-            } else if (currentRecesionesOferente != null) {
-                lstRecesion = bancoProv.getLstRecesionesOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            } else if (currentRescisionesOferente != null) {
+                lstRescision = bancoProv.getLstRescisionesOferente(currentEmpresa.getIdentificadorPrimarioOferente());
             }
         }
     }
@@ -122,15 +127,15 @@ public class BancoProveedoresBean {
         this.currentMultaOferente = currentMultaOferente;
     }
 
-    public RecesionesOferente getCurrentRecesionesOferente() {
-        if (currentRecesionesOferente == null) {
-            currentRecesionesOferente = new RecesionesOferente();
+    public RescisionesOferente getCurrentRescisionesOferente() {
+        if (currentRescisionesOferente == null) {
+            currentRescisionesOferente = new RescisionesOferente();
         }
-        return currentRecesionesOferente;
+        return currentRescisionesOferente;
     }
 
-    public void setCurrentRecesionesOferente(RecesionesOferente currentRecesionesOferente) {
-        this.currentRecesionesOferente = currentRecesionesOferente;
+    public void setCurrentRescisionesOferente(RescisionesOferente currentRescisionesOferente) {
+        this.currentRescisionesOferente = currentRescisionesOferente;
     }
 
     public void buscarEmpresas() {
@@ -160,6 +165,22 @@ public class BancoProveedoresBean {
         this.deshabilitado = deshabilitado;
     }
 
+    public Boolean getDeshabilitadoEliminar() {
+        return deshabilitadoEliminar;
+    }
+
+    public void setDeshabilitadoEliminar(Boolean deshabilitadoEliminar) {
+        this.deshabilitadoEliminar = deshabilitadoEliminar;
+    }
+    
+    public Boolean getDeshabilitadoEfectiva() {
+        return deshabilitadoEfectiva;
+    }
+
+    public void setDeshabilitadoEfectiva(Boolean deshabilitadoEfectiva) {
+        this.deshabilitadoEfectiva = deshabilitadoEfectiva;
+    }
+
     public TipoFaltas getCurrentFaltas() {
         return currentFaltas;
     }
@@ -178,19 +199,22 @@ public class BancoProveedoresBean {
         currentGarantiaOferente = new GarantiasOferente();
     }
 
-    public void nuevaRecesion() {
+    public void nuevaRescision() {
         nuevo();
-        currentRecesionesOferente = new RecesionesOferente();
+        currentRescisionesOferente = new RescisionesOferente();
     }
 
     private void nuevo() {
         deshabilitado = false;
+        deshabilitadoEliminar = true;
         currentEmpresa = null;
         numeroDeNit = null;
         razonSocial = null;
         descripcion = null;
         lstMultas = null;
         lstFaltas = null;
+        lstGarantias = null;
+        lstRescision = null;
     }
 
     public void nuevaMulta() {
@@ -199,35 +223,155 @@ public class BancoProveedoresBean {
     }
 
     public void guardarFalta() {
-        currentFaltasOferente.setIdentificadorPrimarioOferente(currentEmpresa.getIdentificadorPrimarioOferente());
-        currentFaltasOferente.setFechaDeInsercion(new Date());
-        currentFaltasOferente.setEstadoDeEliminacion(0);
-        bancoProv.saveFaltaOferente(currentFaltasOferente);
-        lstFaltas = bancoProv.getLstFaltasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+        Boolean valido;
+        
+        if (currentEmpresa != null) {
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtContratista", InputText.class, currentEmpresa.getRazonSocial());
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtNumContrato", InputText.class, currentFaltasOferente.getNumeroContrato()) && valido;
+
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbTipoFalta", SelectOneMenu.class, currentFaltasOferente.getIdTipoDeFalta()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txaDescripcion", InputTextarea.class, currentFaltasOferente.getDescripcionFalta()) && valido;
+        }else{
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtContratista", InputText.class, null);
+        }
+        
+        if(currentEmpresa != null && valido == true){
+            currentFaltasOferente.setIdentificadorPrimarioOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            currentFaltasOferente.setFechaDeInsercion(new Date());
+            currentFaltasOferente.setEstadoDeEliminacion(0);
+            bancoProv.saveFaltaOferente(currentFaltasOferente);
+            lstFaltas = bancoProv.getLstFaltasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+
+            if(currentFaltasOferente.getIdentificadorFalta() == null){
+                currentFaltasOferente = new FaltasOferente();
+                deshabilitadoEliminar = true;
+            }else{
+                deshabilitadoEliminar = false;
+            }
+            
+            JsfUtil.addSuccessMessage("El registro ha sido guardado");
+        }else{
+            JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
+        }
     }
 
     public void guardarMulta() {
-        currentMultaOferente.setIdentificadorPrimarioOferente(currentEmpresa.getIdentificadorPrimarioOferente());
-        currentMultaOferente.setFechaDeInsercion(new Date());
-        currentMultaOferente.setEstadoDeEliminacion(0);
-        bancoProv.saveMultaOferente(currentMultaOferente);
-        lstMultas = bancoProv.getLstMultasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+        Boolean valido;
+        
+        if (currentEmpresa != null) {
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtContratista", InputText.class, currentEmpresa.getRazonSocial());
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtNumContrato", InputText.class, currentMultaOferente.getNumeroContrato()) && valido;
+
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbTipoMulta", SelectOneMenu.class, currentMultaOferente.getIdTipoDeMulta()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtMonto", InputText.class, currentMultaOferente.getMontoMulta()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txaDescripcion", InputTextarea.class, currentMultaOferente.getDescripcionDeMulta()) && valido;
+        }else{
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtContratista", InputText.class, null);
+        }
+        
+        if(currentEmpresa != null && valido == true){
+            currentMultaOferente.setIdentificadorPrimarioOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            currentMultaOferente.setFechaDeInsercion(new Date());
+            currentMultaOferente.setEstadoDeEliminacion(0);
+            bancoProv.saveMultaOferente(currentMultaOferente);
+            lstMultas = bancoProv.getLstMultasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            
+            if(currentMultaOferente.getIdentificadorMulta()== null){
+                currentMultaOferente = new MultasOferente();
+                deshabilitadoEliminar = true;
+            }else{
+                deshabilitadoEliminar = false;
+            }
+            
+            JsfUtil.addSuccessMessage("El registro ha sido guardado");
+        }else{
+            JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
+        }
     }
 
     public void guardarGarantia() {
-        currentGarantiaOferente.setIdentificadorPrimarioOferente(currentEmpresa.getIdentificadorPrimarioOferente());
-        currentGarantiaOferente.setFechaDeInsercion(new Date());
-        currentGarantiaOferente.setEstadoDeEliminacion(0);
-        bancoProv.saveGarantiaOferente(currentGarantiaOferente);
-        lstGarantias = bancoProv.getLstGarantiasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+        Boolean valido;
+        
+        if (currentEmpresa != null) {
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtContratista", InputText.class, currentEmpresa.getRazonSocial());
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtNumContrato", InputText.class, currentGarantiaOferente.getNumeroContrato()) && valido;
+
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbTipoGarantia", SelectOneMenu.class, currentGarantiaOferente.getIdTipoGarantia()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtMonto", InputText.class, currentGarantiaOferente.getMontoGarantia()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cdlVencimiento", Calendar.class, currentGarantiaOferente.getFechaVencimiento()) && valido;
+            
+            if(currentGarantiaOferente.getEfectiva() == Boolean.TRUE ){
+                valido = JsfUtil.addErrorStyle("frmPrincipal", "cdlEfectiva", Calendar.class, currentGarantiaOferente.getFechaEmision()) && valido;
+            }
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txaDescripcion", InputTextarea.class, currentGarantiaOferente.getDescripcionGarantia()) && valido;
+        }else{
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtContratista", InputText.class, null);
+        }
+        
+        if(currentEmpresa != null && valido == true){
+            currentGarantiaOferente.setIdentificadorPrimarioOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            currentGarantiaOferente.setFechaDeInsercion(new Date());
+            currentGarantiaOferente.setEstadoDeEliminacion(0);
+            bancoProv.saveGarantiaOferente(currentGarantiaOferente);
+            lstGarantias = bancoProv.getLstGarantiasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            
+            if(currentGarantiaOferente.getIdentificadorGarantia()== null){
+                currentGarantiaOferente = new GarantiasOferente();
+                deshabilitadoEliminar = true;
+            }else{
+                deshabilitadoEliminar = false;
+            }
+            
+            JsfUtil.addSuccessMessage("El registro ha sido guardado");
+        }else{
+            JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
+        }
+    }
+    
+    public void efectivaChange() {
+        if( this.currentGarantiaOferente.getEfectiva() == Boolean.TRUE){
+            this.deshabilitadoEfectiva = false;
+        }else{
+            this.deshabilitadoEfectiva = true;
+            this.currentGarantiaOferente.setFechaEmision(null);
+        }
     }
 
-    public void guardarRecesion() {
-        currentRecesionesOferente.setIdentificadorPrimarioOferente(currentEmpresa.getIdentificadorPrimarioOferente());
-        currentRecesionesOferente.setFechaDeInsercion(new Date());
-        currentRecesionesOferente.setEstadoDeEliminacion(0);
-        bancoProv.saveRecesionOferente(currentRecesionesOferente);
-        lstRecesion = bancoProv.getLstRecesionesOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+    public void guardarRescision() {
+        Boolean valido;
+        
+        if (currentEmpresa != null) {
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtContratista", InputText.class, currentEmpresa.getRazonSocial());
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtNumContrato", InputText.class, currentRescisionesOferente.getNumeroContrato()) && valido;
+
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cdlVencimiento", Calendar.class, currentRescisionesOferente.getFechaRecesion()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtMontoPagado", InputText.class, currentRescisionesOferente.getMontoPagado()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtMontoRemanente", InputText.class, currentRescisionesOferente.getMontoRemanente()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbTipoRescision", SelectOneMenu.class, currentRescisionesOferente.getTipoRecesion()) && valido;
+            
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txaObservaciones", InputTextarea.class, currentRescisionesOferente.getDescripcionRecesion()) && valido;
+        }else{
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtContratista", InputText.class, null);
+        }
+        
+        if(currentEmpresa != null && valido == true){
+            currentRescisionesOferente.setIdentificadorPrimarioOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            currentRescisionesOferente.setFechaDeInsercion(new Date());
+            currentRescisionesOferente.setEstadoDeEliminacion(0);
+            bancoProv.saveRescisionOferente(currentRescisionesOferente);
+            lstRescision = bancoProv.getLstRescisionesOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            
+            if(currentRescisionesOferente.getIdentificadorRecesion() == null){
+                currentRescisionesOferente = new RescisionesOferente();
+                deshabilitadoEliminar = true;
+            }else{
+                deshabilitadoEliminar = false;
+            }
+            
+            JsfUtil.addSuccessMessage("El registro ha sido guardado");
+        }else{
+            JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
+        }
     }
 
     public String getDescripcion() {
@@ -271,15 +415,15 @@ public class BancoProveedoresBean {
         this.lstFaltas = lstFaltas;
     }
 
-    public List<VwRecesionesEmpresa> getLstRecesion() {
-        if (lstRecesion == null) {
-            lstRecesion = new ArrayList<VwRecesionesEmpresa>();
+    public List<VwRescisionesEmpresa> getLstRescision() {
+        if (lstRescision == null) {
+            lstRescision = new ArrayList<VwRescisionesEmpresa>();
         }
-        return lstRecesion;
+        return lstRescision;
     }
 
-    public void setLstRecesion(List<VwRecesionesEmpresa> lstRecesion) {
-        this.lstRecesion = lstRecesion;
+    public void setLstRescision(List<VwRescisionesEmpresa> lstRescision) {
+        this.lstRescision = lstRescision;
     }
 
     public List<VwMultasEmpresa> getLstMultas() {
@@ -312,10 +456,26 @@ public class BancoProveedoresBean {
         return lstTrasladoEmpresa;
     }
 
+    public void onRowSelectEmpresa(SelectEvent event) {
+        deshabilitadoEliminar = true;
+        if (currentEmpresa != null) {
+            if (currentFaltasOferente != null) {
+                currentFaltasOferente = new FaltasOferente();
+            } else if (currentMultaOferente != null) {
+                currentMultaOferente = new MultasOferente();
+            } else if (currentGarantiaOferente != null) {
+                currentGarantiaOferente = new GarantiasOferente();
+            } else if (currentRescisionesOferente != null) {
+                currentRescisionesOferente = new RescisionesOferente();
+            }
+        }
+    }
+    
     public void onRowSelectFalta(SelectEvent event) {
         FaltasOferente falta = bancoProv.getFaltaById(((VwFaltasEmpresa) event.getObject()).getIdentificadorFalta());
         if (falta != null) {
             currentFaltasOferente = falta;
+            deshabilitadoEliminar = false;
         }
     }
 
@@ -323,20 +483,24 @@ public class BancoProveedoresBean {
         GarantiasOferente garantia = bancoProv.getGarantiaById(((VwGarantiasEmpresa) event.getObject()).getIdentificadorGarantia());
         if (garantia != null) {
             currentGarantiaOferente = garantia;
+            deshabilitadoEliminar = false;
+            this.efectivaChange();
         }
     }
 
     public void onRowSelectMultas(SelectEvent event) {
         MultasOferente multa = bancoProv.getMultaById(((VwMultasEmpresa) event.getObject()).getIdentificadorMulta());
         if (multa != null) {
+            deshabilitadoEliminar = false;
             currentMultaOferente = multa;
         }
     }
 
-    public void onRowSelectRecesiones(SelectEvent event) {
-        RecesionesOferente recesion = bancoProv.getRecesionById(((VwRecesionesEmpresa) event.getObject()).getIdentificadorRecesion());
-        if (recesion != null) {
-            currentRecesionesOferente = recesion;
+    public void onRowSelectRescisiones(SelectEvent event) {
+        RescisionesOferente rescision = bancoProv.getRescisionById(((VwRescisionesEmpresa) event.getObject()).getIdentificadorRecesion());
+        if (rescision != null) {
+            deshabilitadoEliminar = false;
+            currentRescisionesOferente = rescision;
         }
     }
 
@@ -346,27 +510,50 @@ public class BancoProveedoresBean {
             currentFaltasOferente.setFechaDeEliminacion(new Date());
             bancoProv.saveFaltaOferente(currentFaltasOferente);
             lstFaltas = bancoProv.getLstFaltasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            currentFaltasOferente = new FaltasOferente();
+            deshabilitadoEliminar = true;
+            
+            JsfUtil.addSuccessMessage("El registro ha sido eliminado");
         }
     }
 
     public void eliminarGarantia() {
         if (currentGarantiaOferente != null && currentGarantiaOferente.getIdentificadorGarantia() != null) {
             currentGarantiaOferente.setEstadoDeEliminacion(1);
-            guardarGarantia();
+            currentGarantiaOferente.setFechaDeEliminacion(new Date());
+            bancoProv.saveGarantiaOferente(currentGarantiaOferente);
+            lstGarantias = bancoProv.getLstGarantiasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            
+            currentGarantiaOferente = new GarantiasOferente();
+            deshabilitadoEliminar = true;
+            JsfUtil.addSuccessMessage("El registro ha sido eliminado");
         }
     }
 
     public void eliminarMulta() {
         if (currentMultaOferente != null && currentMultaOferente.getIdentificadorMulta() != null) {
             currentMultaOferente.setEstadoDeEliminacion(1);
-            guardarMulta();
+            currentMultaOferente.setFechaDeEliminacion(new Date());
+            bancoProv.saveMultaOferente(currentMultaOferente);
+            lstMultas = bancoProv.getLstMultasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            
+            currentMultaOferente = new MultasOferente();
+            deshabilitadoEliminar = true;
+            JsfUtil.addSuccessMessage("El registro ha sido eliminado");
         }
     }
 
-    public void eliminarRecesion() {
-        if (currentRecesionesOferente != null && currentRecesionesOferente.getIdentificadorRecesion() != null) {
-            currentRecesionesOferente.setEstadoDeEliminacion(1);
-            guardarRecesion();
+    public void eliminarRescision() {
+        if (currentRescisionesOferente != null && currentRescisionesOferente.getIdentificadorRecesion() != null) {
+            currentRescisionesOferente.setEstadoDeEliminacion(1);
+            currentRescisionesOferente.setFechaDeEliminacion(new Date());
+            bancoProv.saveRescisionOferente(currentRescisionesOferente);
+            lstRescision = bancoProv.getLstRescisionesOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            
+            currentRescisionesOferente = new RescisionesOferente();
+            deshabilitadoEliminar = true;
+            
+            JsfUtil.addSuccessMessage("El registro ha sido eliminado");
         }
     }
 

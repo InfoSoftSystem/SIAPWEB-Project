@@ -9,11 +9,11 @@
         <ui:define name="content">
             <h:form id="frmPrincipal">
                 <p:menubar>
-                    <p:menuitem value="Nuevo" action="#{bancoProveedoresBean.nuevaMulta}" update="pnlEmpresas tblMultas" icon="nuevo" ajax="true"/>
-                    <p:menuitem value="Modificar" icon="modificar" />
-                    <p:menuitem value="Eliminar" icon="eliminar" action="#{bancoProveedoresBean.eliminarMulta}" update="pnlEmpresas tblMultas"/>
-                    <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarMulta}" update="frmPrincipal" icon="guardar" ajax="true" />
-                    <p:menuitem value="Recuperar" icon="recuperar" disabled="true"/>
+                    <p:menuitem value="Nuevo" action="#{bancoProveedoresBean.nuevaMulta}" update="frmPrincipal pnlEmpresas tblMultas" icon="nuevo" ajax="true"/>
+                    <p:menuitem value="Modificar" icon="modificar" action="#{bancoProveedoresBean.nuevaMulta}" update="pnlEmpresas tblMultas frmPrincipal" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
+                    <p:menuitem value="Eliminar" icon="eliminar" action="#{bancoProveedoresBean.eliminarMulta}" update="pnlEmpresas tblMultas frmPrincipal" disabled="#{bancoProveedoresBean.deshabilitadoEliminar}"/>
+                    <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarMulta}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                    <p:menuitem value="Recuperar" icon="recuperar" action="#{bancoProveedoresBean.nuevaMulta}" update="pnlEmpresas tblMultas frmPrincipal" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
                     <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
                     <f:facet name="options">
                         <p:outputLabel value="Usuario: "/>
@@ -56,7 +56,7 @@
                 </p:panel>
                 <p:dataTable id="tblMultas" value="#{bancoProveedoresBean.lstMultas}" var="multa" selectionMode="single" rowKey="#{multa.identificadorMulta}">
                     <p:ajax event="rowSelect" listener="#{bancoProveedoresBean.onRowSelectMultas}"   
-                            update=":frmPrincipal:pnlEmpresas" /> 
+                            update=":frmPrincipal :frmPrincipal:pnlEmpresas" /> 
                     <p:column headerText="Contratista">
                         <p:outputLabel value="#{multa.razonSocial}"/>
                     </p:column>
@@ -95,7 +95,7 @@
                     <p:outputLabel value="Listado de empresas"/>
                     <p:dataTable id="tblEmpresas" value="#{bancoProveedoresBean.lstEmpresa}" var="emp" selectionMode="single" 
                                  selection="#{bancoProveedoresBean.currentEmpresa}" rowKey="#{emp.identificadorPrimarioDeLaEmpresa}">
-                        <p:ajax event="rowSelect"  oncomplete="dlgBuscarEmp.hide();" update=":frmPrincipal:pnlEmpresas :frmPrincipal:tblMultas" />  
+                        <p:ajax event="rowSelect"  listener="#{bancoProveedoresBean.onRowSelectEmpresa}" oncomplete="dlgBuscarEmp.hide();" update=":frmPrincipal:pnlEmpresas :frmPrincipal:tblMultas" />  
                         
                         <p:column headerText="Id" width="50">
                             <p:outputLabel value="#{emp.identificadorPrimarioDeLaEmpresa}" />

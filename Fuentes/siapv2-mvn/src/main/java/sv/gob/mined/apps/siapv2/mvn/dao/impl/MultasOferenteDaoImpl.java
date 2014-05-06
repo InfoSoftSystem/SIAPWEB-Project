@@ -21,7 +21,10 @@ public class MultasOferenteDaoImpl extends XJdbcTemplate implements MultasOferen
 
     @Override
     public List<VwMultasEmpresa> findAllByOferente(Integer identificadorPrimarioOferente) {
-        String sql = "SELECT * FROM vw_multas_empresa WHERE identificadorPrimarioOferente = " + identificadorPrimarioOferente;
+        String sql = "SELECT * FROM vw_multas_empresa "
+                + " WHERE identificadorPrimarioOferente = " + identificadorPrimarioOferente 
+                + "   and estadodeeliminacion = 0 "
+                + "   ORDER BY identificadorMulta desc";
         return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwMultasEmpresa.class));
     }
 

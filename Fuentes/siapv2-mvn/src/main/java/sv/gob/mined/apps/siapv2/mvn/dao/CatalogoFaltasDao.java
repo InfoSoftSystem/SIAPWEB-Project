@@ -8,7 +8,7 @@ import java.util.List;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoFaltas;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoGarantias;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoMultas;
-import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRecesion;
+import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRescision;
 
 /**
  *
@@ -18,5 +18,5 @@ public interface CatalogoFaltasDao {
     public List<TipoFaltas> findTipoFaltas();
     public List<TipoMultas> findTipoMultas();
     public List<TipoGarantias> findTipoGarantias();
-    public List<TipoRecesion> findTipoRecesion();
+    public List<TipoRescision> findTipoRescision();
 }
