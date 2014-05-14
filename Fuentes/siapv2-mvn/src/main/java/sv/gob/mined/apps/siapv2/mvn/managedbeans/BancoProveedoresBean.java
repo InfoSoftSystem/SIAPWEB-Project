@@ -449,10 +449,7 @@ public class BancoProveedoresBean {
     }
 
     public List<VwTrasladoEmpresa> getLstTrasladoEmpresa() {
-        if (lstTrasladoEmpresa == null) {
-            lstTrasladoEmpresa = bancoProv.getLstTrasladoEmpresa();
-        }
-        lstTrasladoEmpresa.get(1).setSeleccionado(true);
+        lstTrasladoEmpresa = bancoProv.getLstTrasladoEmpresa();
         return lstTrasladoEmpresa;
     }
 
@@ -558,11 +555,18 @@ public class BancoProveedoresBean {
     }
 
     public void trasladoOferente() {
-        for (VwTrasladoEmpresa empresa : getLstTrasladoEmpresa()) {
+        boolean entro = false;
+        for (VwTrasladoEmpresa empresa : lstTrasladoEmpresa) {
             if (empresa.getSeleccionado()) {
                 bancoProv.trasladoOferente(empresa.getIdentificadorPrimarioDeLaEmpresa());
-                JsfUtil.addSuccessMessage("Proceso completado con éxito!");
+                entro = true;
             }
+        }
+        
+        if(entro){
+            JsfUtil.addSuccessMessage("Proceso completado con éxito!");
+        }else{
+            JsfUtil.addWarningMessage("No ha seleccionado ningun registro");
         }
 
     }

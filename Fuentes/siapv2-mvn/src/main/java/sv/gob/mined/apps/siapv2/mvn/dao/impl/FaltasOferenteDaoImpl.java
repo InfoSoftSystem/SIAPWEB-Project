@@ -27,7 +27,7 @@ public class FaltasOferenteDaoImpl extends XJdbcTemplate implements FaltasOferen
         String sql = "SELECT * "
                 + " FROM vw_faltas_empresa "
                 + " WHERE identificadorPrimarioOferente = " + identificadorPrimarioOferente + " "
-                + "   and estadoeliminacion = 0 "
+                + "   and estadoDeEliminacion = 0 "
                 + "   ORDER BY identificadorFalta desc";
         return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwFaltasEmpresa.class));
     }

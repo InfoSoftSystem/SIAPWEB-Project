@@ -5,14 +5,24 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-
+    
     <ui:composition template="#{request.contextPath}/../resources/template/tareasTemplate.xhtml">
+        <ui:define name ="auxiliar">
+            <p:dialog header="Confirmar" widgetVar="dlg2" modal="true" resizable="false" closable="false" height="70" focus="no" >
+                <h:outputText value="¿Desea eliminar este registro?" /> <br/><br/> <hr/>
+                <center>
+                    <p:commandButton id="si" value="Si" type="submit" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" actionListener="#{bancoProveedoresBean.eliminarFalta}" update="frmPrincipal" onclick="PF('dlg2').hide();"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <p:commandButton id="no" value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="PF('dlg2').hide();"/>
+                </center>
+            </p:dialog>
+        </ui:define>
         <ui:define name="content">
             <h:form id="frmPrincipal" >
                 <p:menubar>
                     <p:menuitem value="Nuevo" action="#{bancoProveedoresBean.nuevaFalta}" update="frmPrincipal pnlEmpresas tblFaltas" icon="nuevo" ajax="true"/>
                     <p:menuitem value="Modificar" icon="modificar" action="#{bancoProveedoresBean.nuevaFalta}" update="pnlEmpresas tblFaltas frmPrincipal" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
-                    <p:menuitem value="Eliminar" icon="eliminar" action="#{bancoProveedoresBean.eliminarFalta}" update="pnlEmpresas tblFaltas frmPrincipal" disabled="#{bancoProveedoresBean.deshabilitadoEliminar}"/>
+                    <p:menuitem value="Eliminar" icon="eliminar"  disabled="#{bancoProveedoresBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
                     <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarFalta}" icon="guardar" ajax="true" update="frmPrincipal" disabled="#{bancoProveedoresBean.deshabilitado}"/>
                     <p:menuitem value="Recuperar" icon="recuperar" action="#{bancoProveedoresBean.nuevaFalta}" update="pnlEmpresas tblFaltas frmPrincipal" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
                     <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
