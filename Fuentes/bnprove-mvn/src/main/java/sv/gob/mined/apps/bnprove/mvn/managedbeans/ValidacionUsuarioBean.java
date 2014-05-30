@@ -10,6 +10,10 @@ import java.util.List;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.component.inputmask.InputMask;
+import org.primefaces.component.inputtext.InputText;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -34,6 +38,10 @@ public class ValidacionUsuarioBean {
     private String respuesta2;
     private Persona currentPersona;
     private Usuario currentUsuario;
+    private Boolean mostrarSignUp= Boolean.FALSE;
+    private Boolean mostrarRecuperarCont= Boolean.FALSE;
+
+    
     @Autowired
     private ProveedoresBo provBo;
     private List<PreguntaValidaUsuario> lstPreguntasUsuario = new ArrayList<PreguntaValidaUsuario>();
@@ -86,19 +94,45 @@ public class ValidacionUsuarioBean {
     }
 
     public void nuevoUsuario() {
-        if (provBo.isExistPersonaByUsuario(currentUsuario.getUserName())) {
-            JsfUtil.addWarningMessage("Ya existe el nombre de usuario " + currentUsuario.getUserName() + ". Escriba otro nombre de usuario.");
-        } else {
-            currentUsuario.setFechaInsercion(new Date());
-            currentUsuario.setEstadoDeEliminacion(0);
-            int var = provBo.saveUsuario(currentUsuario);
-
-            if (var != 0) {
-                JsfUtil.addSuccessMessage("Registro completado.");
+        Boolean valido;
+        
+        valido = JsfUtil.addErrorStyle("frmPrincipal", "txtPrimerNombre", InputText.class, currentUsuario.getPrimerNombre());
+        valido = JsfUtil.addErrorStyle("frmPrincipal", "txtPrimerApellido", InputText.class, currentUsuario.getPrimerApellido())& valido;
+        
+        valido = JsfUtil.addErrorStyle("frmPrincipal", "txtTelefono", InputMask.class, currentUsuario.getTelefono())& valido;
+        valido = JsfUtil.addErrorStyle("frmPrincipal", "txtEmail", InputText.class, currentUsuario.getEMail())& valido;
+        
+        valido = JsfUtil.addErrorStyle("frmPrincipal", "txtUsuarioDeAcceso", InputText.class, currentUsuario.getUserName())& valido;
+        valido = JsfUtil.addErrorStyle("frmPrincipal", "txtPass", InputText.class, currentUsuario.getPassword())& valido;
+        
+        valido = JsfUtil.addErrorStyle("frmPrincipal", "cbPregunta1", SelectOneMenu.class, currentUsuario.getIdPregunta1())& valido;
+        valido = JsfUtil.addErrorStyle("frmPrincipal", "txtRespuesta1", InputText.class, currentUsuario.getRespuesta1())& valido;
+        valido = JsfUtil.addErrorStyle("frmPrincipal", "cbPregunta2", SelectOneMenu.class, currentUsuario.getIdPregunta2())& valido;
+        valido = JsfUtil.addErrorStyle("frmPrincipal", "txtRespuesta2", InputText.class, currentUsuario.getRespuesta2())& valido;
+        
+        if(valido ){
+            if (provBo.isExistPersonaByUsuario(currentUsuario.getUserName())) {
+                JsfUtil.addWarningMessage("Ya existe el nombre de usuario " + currentUsuario.getUserName() + ". Escriba otro nombre de usuario.");
+                this.mostrarSignUp = Boolean.TRUE;
             } else {
-                JsfUtil.addErrorMessage("Ocurrio un error al registrar el nuevo usuario.");
+                currentUsuario.setFechaInsercion(new Date());
+                currentUsuario.setEstadoDeEliminacion(0);
+                int var = provBo.saveUsuario(currentUsuario);
+
+                if (var != 0) {
+                    JsfUtil.addSuccessMessage("Registro completado.");
+                    this.mostrarSignUp = Boolean.FALSE;
+                    //RequestContext.getCurrentInstance().execute("registroUsuario.show();");
+                } else {
+                    JsfUtil.addErrorMessage("Ocurrio un error al registrar el nuevo usuario.");
+                    this.mostrarSignUp = Boolean.TRUE;
+                }
             }
+        }else{
+            JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
+            this.mostrarSignUp = Boolean.TRUE;
         }
+        RequestContext.getCurrentInstance().update("frmPrincipal:registroUsuario");
     }
 
     public Persona getCurrentPersona() {
@@ -152,12 +186,14 @@ public class ValidacionUsuarioBean {
     }
 
     public void buscarUsuarioPreguntas() {
-        if (dui.replace("_", "").length() == 9) {
+        mostrarRecuperarCont = Boolean.TRUE;
+        if (dui.replace("_", "").length() >= 9) {
             lstPreguntasUsuario = provBo.findAllByDui(dui);
-            if(lstPreguntasUsuario.isEmpty()){
-                JsfUtil.addWarningMessage("El usuario con DUI " + dui + " no esta registrado");
+            if(lstPreguntasUsuario == null || lstPreguntasUsuario.isEmpty()){
+                JsfUtil.addWarningMessage("El usuario con # Documento Legal " + dui + " no esta registrado");
             }
         }
+        RequestContext.getCurrentInstance().update("frmPrincipal:dlgRecuperarContra");
     }
 
     public List<PreguntaValidaUsuario> getLstPreguntasUsuario() {
@@ -201,11 +237,34 @@ public class ValidacionUsuarioBean {
     }
     
     public void comprobarRespuestas(){
+        mostrarRecuperarCont = Boolean.TRUE;
         Usuario usuario = provBo.findUsuarioByDui(dui);
-        if(provBo.comprobarRespuestas(usuario.getUserName(), respuesta1, respuesta2)){
-            JsfUtil.addSuccessMessage("Respuestas correctas");
+        if(usuario == null){
+            JsfUtil.addWarningMessage("El usuario con DUI " + dui + " no esta registrado");
         }else{
-            JsfUtil.addSuccessMessage("Respuestas incorrectas");
+            if(provBo.comprobarRespuestas(usuario.getUserName(), respuesta1, respuesta2)){
+                JsfUtil.addSuccessMessage("Respuestas correctas");
+                mostrarRecuperarCont = Boolean.FALSE;
+            }else{
+                JsfUtil.addErrorMessage("Respuestas incorrectas");
+            }
         }
+        RequestContext.getCurrentInstance().update("frmPrincipal:dlgRecuperarContra");
+    }
+    
+    public Boolean getMostrarSignUp() {
+        return mostrarSignUp;
+    }
+
+    public void setMostrarSignUp(Boolean mostrarSignUp) {
+        this.mostrarSignUp = mostrarSignUp;
+    }
+
+    public Boolean getMostrarRecuperarCont() {
+        return mostrarRecuperarCont;
+    }
+
+    public void setMostrarRecuperarCont(Boolean mostrarRecuperarCont) {
+        this.mostrarRecuperarCont = mostrarRecuperarCont;
     }
 }

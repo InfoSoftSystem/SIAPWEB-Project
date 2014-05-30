@@ -6,6 +6,7 @@ package sv.gob.mined.apps.bnprove.mvn.managedbeans;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -103,11 +104,12 @@ public class RegistroBean {
                     currentEmpresa.setTipoDeEstablecimiento(1);
                 } else {
                     idPersoneria = currentEmpresa.getIdentificadorDePersoneria();
+                    this.tipoPersoneria();
 
                     //cargar Cobertura
-                    cargarCobertura(currentEmpresa.getIdentificadorPrimarioDeLaEmpresa());
+                    this.cargarCobertura(currentEmpresa.getIdentificadorPrimarioDeLaEmpresa());
 
-                    cargarOferta(currentEmpresa.getIdentificadorPrimarioDeLaEmpresa());
+                    this.cargarOferta(currentEmpresa.getIdentificadorPrimarioDeLaEmpresa());
                 }
             }
         }
@@ -165,25 +167,25 @@ public class RegistroBean {
             }
             if (event.getNewStep().equals("paso2")) {
                 tituloWizard = "2 - Empresa";
-                /*RequestContext.getCurrentInstance().update("frIncial:imgPaso1");
+                /*RequestContext.getCurrentInstance().update("frmPrincipal:imgPaso1");
                  paso1 = "../../resources/images/personas_disable.png";*/
             }
             if (event.getNewStep().equals("paso3")) {
                 tituloWizard = "3 - Ubicación";
-                /*RequestContext.getCurrentInstance().update("frIncial:imgPaso2");
+                /*RequestContext.getCurrentInstance().update("frmPrincipal:imgPaso2");
                  paso2 = "../../resources/images/empresa_disable.png";*/
             }
             if (event.getNewStep().equals("paso4")) {
                 tituloWizard = "4 - Que Ofrece";
-                /*RequestContext.getCurrentInstance().update("frIncial:imgPaso3");
+                /*RequestContext.getCurrentInstance().update("frmPrincipal:imgPaso3");
                  paso3 = "../../resources/images/ubicacion_disable.png";*/
             }
             if (event.getOldStep().equals("paso4")) {
-                /*RequestContext.getCurrentInstance().update("frIncial:imgPaso4");
+                /*RequestContext.getCurrentInstance().update("frmPrincipal:imgPaso4");
                  paso4 = "../../resources/images/productos_disable.png";*/
             }
 
-            RequestContext.getCurrentInstance().update("frIncial:tituloWizard");
+            RequestContext.getCurrentInstance().update("frmPrincipal:tituloWizard");
             return event.getNewStep();
         }
     }
@@ -437,11 +439,12 @@ public class RegistroBean {
     }
 
     public void agregarClasificacion() {
-        if (idSector != null && idSubSector != null) {
+        if (idSector != null && idSector != 0 && idSubSector != null && idSubSector != 0) {
             Boolean existe = false;
             for (ClasificacionEmpresaEconomico cla : getLstClasificacion()) {
-                if (cla.getIdentificadorDelSectorEconomico().equals(idSubSector)) {
+                if (cla.getIdentificadorDelSectorEconomico().equals(idSubSector) && !subSector.getDescripcionDelSectorEconomico().contains("No aparece")) {
                     existe = true;
+                    JsfUtil.addErrorMessage("Ya existe este subsector asociado...");
                     break;
                 }
             }
@@ -655,7 +658,20 @@ public class RegistroBean {
     }
 
     public List<SectorEconomico> getLstSubSector() {
-        lstSubSector = provBo.findAllSubSectorEconomico(idSector);
+        List<SectorEconomico> tmpLstSubSector = provBo.findAllSubSectorEconomico(idSector);
+        for (ClasificacionEmpresaEconomico cla : getLstClasificacion()) {
+            for (int i = 0; i < tmpLstSubSector.size(); i++) {
+                SectorEconomico tmpSubSector = (SectorEconomico) tmpLstSubSector.get(i);
+                if (cla.getIdentificadorDelSectorEconomico().equals(tmpSubSector.getIdentificadorDelSectorEconomico())) {
+                    
+                    if (!tmpSubSector.getDescripcionDelSectorEconomico().contains("No aparece")) {
+                        tmpLstSubSector.remove(i);
+                    }
+                    break;
+                }
+            }
+        }
+        lstSubSector = tmpLstSubSector;
         return lstSubSector;
     }
 
@@ -697,16 +713,16 @@ public class RegistroBean {
     public Boolean isValidaPersona() {
         Boolean valido = true;
         if (currentPersona != null) {
-            valido = JsfUtil.addErrorStyle("frIncial", "cbGenero", SelectOneMenu.class, currentPersona.getIdentificadorDeGenero());
-            valido = JsfUtil.addErrorStyle("frIncial", "txtPriNombre", InputText.class, currentPersona.getPrimerNombre()) && valido;
-            valido = JsfUtil.addErrorStyle("frIncial", "txtPriApellido", InputText.class, currentPersona.getPrimerApellido()) && valido;
-            valido = JsfUtil.addErrorStyle("frIncial", "txtDomicilio", InputText.class, currentPersona.getDomicilio()) && valido;
-            valido = JsfUtil.addErrorStyle("frIncial", "cbDepaPersona", SelectOneMenu.class, currentPersona.getIdentificadorDelDepartamento()) && valido;
-            valido = JsfUtil.addErrorStyle("frIncial", "cbMuniPersona", SelectOneMenu.class, currentPersona.getIdMunicipio()) && valido;
-            valido = JsfUtil.addErrorStyle("frIncial", "txtTelPersona", InputMask.class, currentPersona.getNumeroTelefono()) && valido;
-            valido = JsfUtil.addErrorStyle("frIncial", "cbOrigen", SelectOneMenu.class, currentPersona.getIdentificadorOrigenlCiudadano()) && valido;
-            valido = JsfUtil.addErrorStyle("frIncial", "cbTipoDoc", SelectOneMenu.class, currentPersona.getIdentificadorDeDocumentoLegal()) && valido;
-            valido = JsfUtil.addErrorStyle("frIncial", "txtNumDoc", InputText.class, currentPersona.getNumeroDocumentoLegal()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbGenero", SelectOneMenu.class, currentPersona.getIdentificadorDeGenero());
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtPriNombre", InputText.class, currentPersona.getPrimerNombre()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtPriApellido", InputText.class, currentPersona.getPrimerApellido()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtDomicilio", InputText.class, currentPersona.getDomicilio()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbDepaPersona", SelectOneMenu.class, currentPersona.getIdentificadorDelDepartamento()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbMuniPersona", SelectOneMenu.class, currentPersona.getIdMunicipio()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtTelPersona", InputMask.class, currentPersona.getNumeroTelefono()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbOrigen", SelectOneMenu.class, currentPersona.getIdentificadorOrigenlCiudadano()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbTipoDoc", SelectOneMenu.class, currentPersona.getIdentificadorDeDocumentoLegal()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtNumDoc", InputText.class, currentPersona.getNumeroDocumentoLegal()) && valido;
         }
         return valido;
     }
@@ -715,15 +731,15 @@ public class RegistroBean {
         Boolean valido = true;
 
         if (currentEmpresa != null) {
-            valido = JsfUtil.addErrorStyle("frIncial", "cbPersoneria", SelectOneMenu.class, currentEmpresa.getIdentificadorDePersoneria());
-            valido = JsfUtil.addErrorStyle("frIncial", "cbPais", SelectOneMenu.class, currentEmpresa.getPais()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbPersoneria", SelectOneMenu.class, currentEmpresa.getIdentificadorDePersoneria());
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbPais", SelectOneMenu.class, currentEmpresa.getPais()) && valido;
 
             if (currentEmpresa.getContribuyente()) {
-                valido = JsfUtil.addErrorStyle("frIncial", "txtIva", InputText.class, currentEmpresa.getNumeroIVA()) && valido;
+                valido = JsfUtil.addErrorStyle("frmPrincipal", "txtIva", InputText.class, currentEmpresa.getNumeroIVA()) && valido;
             }
-            valido = JsfUtil.addErrorStyle("frIncial", "txtDireccion", InputText.class, currentEmpresa.getDireccionCompleta()) && valido;
-            valido = JsfUtil.addErrorStyle("frIncial", "cbDepartamentoEmp", SelectOneMenu.class, currentEmpresa.getIdentificadorDelDepartamento()) && valido;
-            valido = JsfUtil.addErrorStyle("frIncial", "cbMunicipioEmp", SelectOneMenu.class, currentEmpresa.getIdMunicipio()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtDireccion", InputText.class, currentEmpresa.getDireccionCompleta()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbDepartamentoEmp", SelectOneMenu.class, currentEmpresa.getIdentificadorDelDepartamento()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbMunicipioEmp", SelectOneMenu.class, currentEmpresa.getIdMunicipio()) && valido;
         }
         return valido;
     }

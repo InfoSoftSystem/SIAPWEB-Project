@@ -23,14 +23,14 @@ public class SectorEconomicoDaoImpl extends XJdbcTemplate implements SectorEcono
 
     @Override
     public List<SectorEconomico> findAll() {
-        String sql = "SELECT * FROM SECTORECONOMICO ORDER BY IDENTIFICADORDELSECTORECONOMICO, SEC_IDENTIFICADORDELSECTORECONOMICO";
+        String sql = "SELECT * FROM SECTORECONOMICO WHERE SEC_IDENTIFICADORDELSECTORECONOMICO is null ORDER BY IDENTIFICADORDELSECTORECONOMICO, SEC_IDENTIFICADORDELSECTORECONOMICO";
         List<SectorEconomico> sector = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(SectorEconomico.class));
         return sector;
     }
 
     @Override
     public List<SectorEconomico> findAllSub(Integer idSector) {
-        String sql = "SELECT * FROM SECTORECONOMICO WHERE SEC_IDENTIFICADORDELSECTORECONOMICO=" + idSector;
+        String sql = "SELECT * FROM SECTORECONOMICO WHERE SEC_IDENTIFICADORDELSECTORECONOMICO=" + idSector + " ORDER BY IDENTIFICADORDELSECTORECONOMICO ";
         List<SectorEconomico> sector = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(SectorEconomico.class));
         return sector;
     }

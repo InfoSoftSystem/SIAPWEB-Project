@@ -8,6 +8,26 @@
     <f:view contentType="text/html">
         <h:head>
             <f:facet name="first">
+                
+                <script type="text/javascript">
+                    /**
+                    * JSF Validator
+                    */
+                   PrimeFaces.validator['custom.emailValidator'] = {
+
+                       pattern: /\S+@\S+/,
+
+                       validate: function(element, value) {
+                           //use element.data() to access validation metadata, in this case there is none.
+                           if(!this.pattern.test(value)) {
+                               throw {
+                                   summary: 'Error',
+                                   detail: value + ' no es un E-Mail valido.'
+                               }
+                           }
+                       }
+                   };
+                </script>
                 <link href="#{request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
                 <style>
                     .menu1 span:first-child  {
@@ -28,7 +48,7 @@
         </h:head>
 
         <h:body>
-            <h:form id="frIncial">
+            <h:form id="frmPrincipal">
                 <p:growl id="growl" showDetail="true" sticky="false" />
 
                 <p:menubar id="mbar">
@@ -39,7 +59,7 @@
                         <p:outputLabel value="Estado:" />
                         <p:outputLabel value="#{registroBean.estadoRegistro}" style="font-weight: bold;" />
                         <p:spacer width="10" height="8"/>
-                        <p:commandButton value="Guardar" icon="guardar" action="#{registroBean.guardar}" ajax="true" update="growl pnlProductos mbar pnlLstProductos" />
+                        <p:commandButton value="Guardar" icon="guardar" action="#{registroBean.guardar}" ajax="true" validateClient="true" update="growl pnlProductos mbar pnlLstProductos" />
                         <p:spacer width="10" height="8"/>
                         <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this"/>
                     </f:facet>
@@ -67,37 +87,37 @@
 
                                     <p:outputLabel value="2. Primer Nombre: *" for="txtPriNombre"/>
                                     <h:panelGroup>
-                                        <p:inputText id="txtPriNombre" value="#{registroBean.currentPersona.primerNombre}" onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtPriNombre" value="#{registroBean.currentPersona.primerNombre}" onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}" maxlength="150"/>
                                         <p:spacer width="10"/>
                                         <p:outputLabel value="3. Segundo Nombre:" for="txtSegNombre"/>
                                         <p:spacer width="5"/>
-                                        <p:inputText id="txtSegNombre" value="#{registroBean.currentPersona.segundoNombre}" onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtSegNombre" value="#{registroBean.currentPersona.segundoNombre}" onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}" maxlength="150"/>
                                     </h:panelGroup>
 
                                     <p:outputLabel value="4. Primer Apellido: *" for="txtPriApellido"/>
                                     <h:panelGroup>
-                                        <p:inputText id="txtPriApellido" value="#{registroBean.currentPersona.primerApellido}"  onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtPriApellido" value="#{registroBean.currentPersona.primerApellido}"  onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}" maxlength="150"/>
                                         <p:spacer width="10"/>
                                         <p:outputLabel value="5. Segundo Apellido:" for="txtSegApellido"/>
                                         <p:spacer width="5"/>
-                                        <p:inputText id="txtSegApellido" value="#{registroBean.currentPersona.segundoApellido}" onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtSegApellido" value="#{registroBean.currentPersona.segundoApellido}" onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}" maxlength="150"/>
                                         <p:spacer width="10"/>
                                         <p:outputLabel value="6. Apellido Casada:" for="txtApeCasada"/>
                                         <p:spacer width="5"/>
-                                        <p:inputText id="txtApeCasada" value="#{registroBean.currentPersona.ACasada}" onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtApeCasada" value="#{registroBean.currentPersona.ACasada}" onkeypress="return textoMayuscula(this);" styleClass="textoMayuscula" disabled="#{registroBean.disable}" maxlength="150"/>
                                     </h:panelGroup>
 
                                     <p:outputLabel value="7. Domicilio: *" for="txtDomicilio" />
                                     <h:panelGroup>
-                                        <p:inputText id="txtDomicilio" size="64" value="#{registroBean.currentPersona.domicilio}" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtDomicilio" size="64" value="#{registroBean.currentPersona.domicilio}" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}" maxlength="500"/>
                                         <p:spacer width="10"/>
                                         <p:outputLabel value="8. Teléfono: *" for="txtTelPersona" />
                                         <p:spacer width="5"/>
-                                        <p:inputMask id="txtTelPersona" size="8" value="#{registroBean.currentPersona.numeroTelefono}" mask="99999999" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}"/>
+                                        <p:inputMask id="txtTelPersona" size="8" value="#{registroBean.currentPersona.numeroTelefono}" mask="99999999" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}" maxlength="150"/>
                                         <p:spacer width="10"/>
                                         <p:outputLabel value="9. Celular:" for="txtCelular" />
                                         <p:spacer width="5"/>
-                                        <p:inputMask id="txtCelular" size="8" value="#{registroBean.currentPersona.numeroCelular}" mask="99999999" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}"/>
+                                        <p:inputMask id="txtCelular" size="8" value="#{registroBean.currentPersona.numeroCelular}" mask="99999999" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}" maxlength="150"/>
                                     </h:panelGroup>
 
                                     <p:outputLabel value="10. Departamento: *" for="cbDepaPersona" />
@@ -115,18 +135,18 @@
                                         </p:selectOneMenu>
                                         <p:spacer width="10"/>
                                         <p:outputLabel value="12. Cantón:" for="txtCanton" />
-                                        <p:inputText id="txtCanton" size="20" value="#{registroBean.currentPersona.canton}" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtCanton" size="20" value="#{registroBean.currentPersona.canton}" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}" maxlength="100"/>
                                     </h:panelGrid>
 
 
                                     <p:outputLabel value="13. Fecha nac.:" for="clFechaNac" />
                                     <h:panelGrid columns="7">
-                                        <p:calendar id="clFechaNac" size="7" pattern="dd/MM/yyyy" navigator="true" value="#{registroBean.currentPersona.fechaDeNacimiento}" disabled="#{registroBean.disable}"/>
+                                        <p:calendar id="clFechaNac" size="7" pattern="dd/MM/yyyy" navigator="true" value="#{registroBean.currentPersona.fechaDeNacimiento}" disabled="#{registroBean.disable}" converterMessage="Debe ingresar una fecha valida DD/MM/YYYY" maxlength="10"/>
                                         <p:spacer width="10" />
                                         <p:outputLabel value="14. Lectura firma:" for="txtLecturaFirma" />
-                                        <p:inputText id="txtLecturaFirma" size="10" value="#{registroBean.currentPersona.lecturaDeFirma}" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtLecturaFirma" size="10" value="#{registroBean.currentPersona.lecturaDeFirma}" disabled="#{registroBean.disable}" maxlength="250"/>
                                         <p:spacer width="10"/>
-                                        <p:outputLabel value="15. Origen:" for="cbOrigen" />
+                                        <p:outputLabel value="15. Origen: *" for="cbOrigen" />
                                         <p:selectOneMenu id="cbOrigen" value="#{registroBean.currentPersona.identificadorOrigenlCiudadano}" disabled="#{registroBean.disable}">
                                             <f:selectItem itemLabel="Seleccione un origen"/>
                                             <f:selectItems value="#{registroBean.lstOrigenCiudadano}" var="org" itemLabel="#{org.descripcionDeCiudadania}" itemValue="#{org.identificadorOrigenlCiudadano}"/>
@@ -141,21 +161,23 @@
                                         </p:selectOneMenu>
                                         <p:spacer width="10"/>
                                         <p:outputLabel value="17. Num. doc.: *" for="txtNumDoc" />
-                                        <p:inputText id="txtNumDoc" size="10" value="#{registroBean.currentPersona.numeroDocumentoLegal}" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtNumDoc" size="10" value="#{registroBean.currentPersona.numeroDocumentoLegal}" disabled="#{registroBean.disable}" maxlength="250"/>
                                         <p:spacer width="10"/>
                                         <p:outputLabel value="18. Luga y fecha exp.:" for="txtLugarFecha" />
-                                        <p:inputText id="txtLugarFecha" size="20" value="#{registroBean.currentPersona.lugarYFechaExpedicion}" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtLugarFecha" size="20" value="#{registroBean.currentPersona.lugarYFechaExpedicion}" disabled="#{registroBean.disable}" maxlength="250"/>
                                     </h:panelGrid>
 
                                     <p:outputLabel value="19. N.I.T.:" for="txtNitPersona" />
                                     <h:panelGrid columns="7">
-                                        <p:inputMask id="txtNitPersona" size="17" mask="9999-999999-999-9" value="#{registroBean.currentPersona.numeroDeNit}" disabled="#{registroBean.disable}"/>
+                                        <p:inputMask id="txtNitPersona" size="17" mask="9999-999999-999-9" value="#{registroBean.currentPersona.numeroDeNit}" disabled="#{registroBean.disable}" maxlength="150"/>
                                         <p:spacer width="10"/>
                                         <p:outputLabel value="20. Profesión:" for="txtProfesion" />
-                                        <p:inputText id="txtProfesion" value="#{registroBean.currentPersona.profesion}" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtProfesion" value="#{registroBean.currentPersona.profesion}" disabled="#{registroBean.disable}" maxlength="150"/>
                                         <p:spacer width="10"/>
                                         <p:outputLabel value="21. Correo electrónico:" for="txtEMailPersona" />
-                                        <p:inputText id="txtEMailPersona" size="20" value="#{registroBean.currentPersona.EMail}" required="true" requiredMessage="Es necesario el correo electrónico" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtEMailPersona" size="20" value="#{registroBean.currentPersona.EMail}" required="true" requiredMessage="Es necesario el correo electrónico" onkeypress="return textoMinuscula(this);" styleClass="textoMinuscula" disabled="#{registroBean.disable}" maxlength="200">
+                                            <f:validator validatorId="custom.emailValidator" />
+                                        </p:inputText>
                                     </h:panelGrid>
                                 </h:panelGrid>
                             </p:panel>
@@ -188,39 +210,39 @@
                                             <p:selectBooleanCheckbox id="chbContribuyente" value="#{registroBean.currentEmpresa.contribuyente}"/>
                                             <p:spacer width="10"/>
                                             <p:outputLabel value="4. No I.V.A.:" for="txtIva"/>
-                                            <p:inputText id="txtIva" size="7" value="#{registroBean.currentEmpresa.numeroIVA}" disabled="#{registroBean.disable}"/>
+                                            <p:inputText id="txtIva" size="7" value="#{registroBean.currentEmpresa.numeroIVA}" disabled="#{registroBean.disable}" maxlength="20"/>
                                         </h:panelGrid>
                                     </h:panelGrid>
 
                                     <p:outputLabel value="5. No ISSS Patronal:" for="txtIsssEmp" />
                                     <h:panelGrid columns="6">
-                                        <p:inputText id="txtIsssEmp" value="#{registroBean.currentEmpresa.numeroIsssPatronal}" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtIsssEmp" value="#{registroBean.currentEmpresa.numeroIsssPatronal}" disabled="#{registroBean.disable}" maxlength="25"/>
                                         <p:spacer width="10"/>
                                         <p:outputLabel value="6. No Reg. Comercio:" for="txtRegComer" />
-                                        <p:inputText id="txtRegComer" value="#{registroBean.currentEmpresa.nombreComercial}" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtRegComer" value="#{registroBean.currentEmpresa.nombreComercial}" disabled="#{registroBean.disable}" maxlength="75"/>
 
                                     </h:panelGrid>
 
                                     <p:outputLabel value="7. Nombre Comercial:" for="txtNomComer"/>
-                                    <p:inputText id="txtNomComer" size="110" value="#{registroBean.currentEmpresa.nombreComercial}" disabled="#{registroBean.disable}"/>
+                                    <p:inputText id="txtNomComer" size="110" value="#{registroBean.currentEmpresa.nombreComercial}" disabled="#{registroBean.disable}" maxlength="250"/>
 
-                                    <p:outputLabel value="8. Dirección:" for="txtDireccion"/>
+                                    <p:outputLabel value="8. Dirección: *" for="txtDireccion"/>
                                     <h:panelGroup>
-                                        <p:inputText id="txtDireccion" size="110" value="#{registroBean.currentEmpresa.direccionCompleta}" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtDireccion" size="110" value="#{registroBean.currentEmpresa.direccionCompleta}" disabled="#{registroBean.disable}" maxlength="500"/>
                                     </h:panelGroup>
 
                                     <p:outputLabel value="9. Teléfono:" for="txtTelefonoEmp" />
                                     <h:panelGrid columns="8">
-                                        <p:inputText id="txtTelefonoEmp" size="8" value="#{registroBean.currentEmpresa.telefonos}" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtTelefonoEmp" size="8" value="#{registroBean.currentEmpresa.telefonos}" disabled="#{registroBean.disable}" maxlength="75"/>
                                         <p:spacer width="10"/>
                                         <p:outputLabel value="10. Fax:" for="txtFax" />
-                                        <p:inputText id="txtFax" value="#{registroBean.currentEmpresa.fax}" disabled="#{registroBean.disable}"/>
+                                        <p:inputText id="txtFax" value="#{registroBean.currentEmpresa.fax}" disabled="#{registroBean.disable}" maxlength="75"/>
                                         <p:spacer width="10"/>
                                         <p:outputLabel value="11. Celular.:" for="txtCelularEmp" />
-                                        <p:inputMask id="txtCelularEmp" size="7" mask="99999999" value="#{registroBean.currentEmpresa.numeroDeCelular}" disabled="#{registroBean.disable}"/>
+                                        <p:inputMask id="txtCelularEmp" size="7" mask="99999999" value="#{registroBean.currentEmpresa.numeroDeCelular}" disabled="#{registroBean.disable}" maxlength="75"/>
                                     </h:panelGrid>
 
-                                    <p:outputLabel value="12. Departamento:" for="cbDepartamentoEmp" />
+                                    <p:outputLabel value="12. Departamento: *" for="cbDepartamentoEmp" />
                                     <h:panelGrid columns="8">                        
                                         <p:selectOneMenu id="cbDepartamentoEmp" value="#{registroBean.currentEmpresa.identificadorDelDepartamento}" disabled="#{registroBean.disable}">
                                             <f:selectItem itemLabel="Seleccione un departamento"/>
@@ -228,7 +250,7 @@
                                             <p:ajax update="cbMunicipioEmp" />
                                         </p:selectOneMenu>
                                         <p:spacer width="10"/>
-                                        <p:outputLabel value="13. Municipio:" for="cbMunicipioEmp" />
+                                        <p:outputLabel value="13. Municipio: *" for="cbMunicipioEmp" />
                                         <p:selectOneMenu id="cbMunicipioEmp" style="width: 260px;" value="#{registroBean.currentEmpresa.idMunicipio}" disabled="#{registroBean.disable}">
                                             <f:selectItem itemLabel="Seleccione un municipio"/>
                                             <f:selectItems value="#{registroBean.lstMunEmp}"  var="mun" itemLabel="#{mun.nombre}" itemValue="#{mun.id_municipio}"/>
@@ -248,15 +270,15 @@
 
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="a. Razon Social:" for="txtRazonSocial" />
-                                    <p:inputText id="txtRazonSocial" size="75" value="#{registroBean.currentEmpresa.razonSocial}" disabled="#{registroBean.disable}"/>
+                                    <p:inputText id="txtRazonSocial" size="75" value="#{registroBean.currentEmpresa.razonSocial}" disabled="#{registroBean.disable}" maxlength="250"/>
 
                                     <p:spacer width="10"/>
                                     <p:outputLabel value="b. Abrev. según escritura:" for="txtAbreviatura" />
-                                    <p:inputText id="txtAbreviatura" value="#{registroBean.currentEmpresa.abreviaturaSegunEscritura}" disabled="#{registroBean.disable}"/>
+                                    <p:inputText id="txtAbreviatura" value="#{registroBean.currentEmpresa.abreviaturaSegunEscritura}" disabled="#{registroBean.disable}" maxlength="150"/>
 
                                     <p:outputLabel value="c. Fecha constitución:" for="clFechaCons" />
                                     <h:panelGrid columns="8">
-                                        <p:calendar id="clFechaCons" size="7" pattern="dd/MM/yyyy" navigator="true" value="#{registroBean.currentEmpresa.fechaDeConstitucion}" disabled="#{registroBean.disable}"/>
+                                        <p:calendar id="clFechaCons" size="7" pattern="dd/MM/yyyy" navigator="true" value="#{registroBean.currentEmpresa.fechaDeConstitucion}" disabled="#{registroBean.disable}" maxlength="10" converterMessage="Debe ingresar una fecha valida DD/MM/YYYY"/>
                                         <p:spacer width="10"/>
                                         <p:outputLabel value="d. Regimen de Adquisición:" for="cbRegimen" />
                                         <p:selectOneMenu id="cbRegimen" value="#{registroBean.idRegimen}" disabled="#{registroBean.disable}">
@@ -266,16 +288,18 @@
                                     </h:panelGrid>
                                     <p:spacer width="10"/>
                                     <p:outputLabel value="e. N.I.T.:" for="txtNitEmp" />
-                                    <p:inputMask id="txtNitEmp" size="17" mask="9999-999999-999-9" value="#{registroBean.currentEmpresa.numeroDeNit}" disabled="#{registroBean.disable}"/>
+                                    <p:inputMask id="txtNitEmp" size="17" mask="9999-999999-999-9" value="#{registroBean.currentEmpresa.numeroDeNit}" disabled="#{registroBean.disable}" maxlength="150"/>
 
                                     <p:outputLabel value="f. Sito Web:" for="txtWebEmp" />
-                                    <p:inputText id="txtWebEmp" size="50" value="#{registroBean.currentEmpresa.sitioWeb}" disabled="#{registroBean.disable}"/>
+                                    <p:inputText id="txtWebEmp" size="50" value="#{registroBean.currentEmpresa.sitioWeb}" disabled="#{registroBean.disable}" maxlength="250"/>
                                     <p:spacer width="10"/>
                                     <p:outputLabel value="g. Correo electrónico:" for="txtEmailEmp" />
-                                    <p:inputText id="txtEmailEmp" size="25" value="#{registroBean.currentEmpresa.correoElectronico}" disabled="#{registroBean.disable}"/>
+                                    <p:inputText id="txtEmailEmp" size="25" value="#{registroBean.currentEmpresa.correoElectronico}" disabled="#{registroBean.disable}" maxlength="100">
+                                        <f:validator validatorId="custom.emailValidator" />
+                                    </p:inputText>
 
                                     <p:outputLabel value="h. Giro comercial:" for="txtGiro" />
-                                    <p:inputText id="txtGiro" size="50" value="#{registroBean.currentEmpresa.giroEmpresa}" disabled="#{registroBean.disable}"/>
+                                    <p:inputText id="txtGiro" size="50" value="#{registroBean.currentEmpresa.giroEmpresa}" disabled="#{registroBean.disable}" maxlength="500"/>
                                 </h:panelGrid>
                             </p:panel>
                         </p:tab>
@@ -337,7 +361,7 @@
                                     </p:selectOneMenu>
 
                                     <p:outputLabel value="3. Especifique:" for="txaEspecifique" />
-                                    <p:inputTextarea id="txaEspecifique" disabled="#{!registroBean.especificacion}" value="#{registroBean.espClasificacion}"/>
+                                    <p:inputTextarea id="txaEspecifique" disabled="#{!registroBean.especificacion}" value="#{registroBean.espClasificacion}" maxlength="500"/>
 
                                     <p:commandButton value="Agregar" action="#{registroBean.agregarClasificacion}" update="tblOferta pnlProductos"/>
                                 </h:panelGrid>

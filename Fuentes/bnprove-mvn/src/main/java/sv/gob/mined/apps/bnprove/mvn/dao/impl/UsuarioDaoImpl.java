@@ -44,8 +44,12 @@ public class UsuarioDaoImpl extends XJdbcTemplate implements UsuarioDao {
     public Usuario findUsuarioByDui(String numeroDeDui) {
         String sql = "SELECT     dbo.usuario.* "
                 + "FROM         dbo.usuario INNER JOIN  dbo.Persona ON dbo.usuario.userName = dbo.Persona.userName "
-                + "WHERE     (dbo.Persona.numeroDeDui = '" + numeroDeDui + "')";
+                + "WHERE     (dbo.Persona.numeroDocumentoLegal = '" + numeroDeDui + "')";
         List<Usuario> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(Usuario.class));
-        return lst.get(0);
+        if(lst !=null && lst.size()>0){
+            return lst.get(0);
+        }else{ 
+            return null;
+        }
     }
 }
